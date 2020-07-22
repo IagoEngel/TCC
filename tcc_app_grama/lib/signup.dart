@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:tcc_app_grama/login.dart';
-
-
+import 'package:tcc_app_grama/services/auth.dart';
 
 class SignupPage extends StatelessWidget {
+  final AuthService _auth = AuthService();
+  TextEditingController txtEmail = TextEditingController();
+  TextEditingController txtSenha = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       appBar: new AppBar(
+      appBar: new AppBar(
         title: new Text('Cadastre-Se'),
         backgroundColor: Colors.green,
-     ),
+      ),
       body: Container(
         padding: EdgeInsets.only(top: 10, left: 40, right: 40),
         color: Colors.white,
@@ -51,6 +54,7 @@ class SignupPage extends StatelessWidget {
             ),
             TextFormField(
               // autofocus: true,
+              controller: txtEmail,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 labelText: "E-mail",
@@ -69,6 +73,7 @@ class SignupPage extends StatelessWidget {
             ),
             TextFormField(
               autofocus: true,
+              controller: txtSenha,
               keyboardType: TextInputType.text,
               obscureText: true,
               decoration: InputDecoration(
@@ -88,28 +93,30 @@ class SignupPage extends StatelessWidget {
               height: 60,
               alignment: Alignment.centerLeft,
               decoration: BoxDecoration(
-                  color: Colors.green,
+                color: Colors.green,
                 borderRadius: BorderRadius.all(
                   Radius.circular(5),
                 ),
               ),
               child: SizedBox.expand(
                 child: FlatButton(
-                  child: Text(
-                    "Cadastrar",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 20,
+                    child: Text(
+                      "Cadastrar",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                 onPressed: () =>
-                  Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Login()),
-                  ),
-                ),
+                    onPressed: () async {
+                      await _auth.createEmailPasswd(txtEmail.text, txtSenha.text);
+                      
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Login()),
+                      );
+                    }),
               ),
             ),
             SizedBox(

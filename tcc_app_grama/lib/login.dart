@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tcc_app_grama/services/auth.dart';
 import 'package:tcc_app_grama/signup.dart';
 import 'package:tcc_app_grama/telas/tela_inicial.dart';
-
 
 class Login extends StatefulWidget {
   int qtdTentativas = 1;
@@ -11,6 +11,10 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final AuthService _auth = AuthService();
+  TextEditingController txtEmail = TextEditingController();
+  TextEditingController txtSenha = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,18 +72,18 @@ class _LoginState extends State<Login> {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      onPressed: () {
-                        //verificar a senha 3 vezes
-                        /* if (widget.qtdTentativas == 3) {
-                          Navigator.push(
+                      onPressed: () async {
+                        dynamic result = await _auth.signInEmailPasswd(
+                            txtEmail.text, txtSenha.text);
+                        if (result == null) {
+                          print('error signing in');
+                        } else {
+                          print('signed in');
+                        }
+                        Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ResetPasswordPage()),
-                          );
-                        }else{
-                          widget.qtdTentativas++;
-                        } */
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>TelaInicial()));
+                                builder: (context) => TelaInicial()));
                       },
                     ),
                   ),
@@ -88,50 +92,53 @@ class _LoginState extends State<Login> {
                   height: 40,
                   alignment: Alignment.center,
                   child: FlatButton(
-                    child: Text(
-                      "Cadastre-se",
-                      textAlign: TextAlign.center,
-                    ),
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SignupPage()),
-                    ),
-                  ),
+                      child: Text(
+                        "Cadastre-se",
+                        textAlign: TextAlign.center,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SignupPage()),
+                        );
+                      }),
                 ),
               ],
             ),
           ),
         ));
   }
-}
 
-Widget _textFieldEmail() {
-  return TextFormField(
-    // autofocus: true,
-    keyboardType: TextInputType.text,
-    decoration: InputDecoration(
-      labelText: "Email",
-      labelStyle: TextStyle(
-        color: Colors.black38,
-        fontWeight: FontWeight.w400,
-        fontSize: 20,
+  Widget _textFieldEmail() {
+    return TextFormField(
+      // autofocus: true,
+      controller: txtEmail,
+      keyboardType: TextInputType.text,
+      decoration: InputDecoration(
+        labelText: "Email",
+        labelStyle: TextStyle(
+          color: Colors.black38,
+          fontWeight: FontWeight.w400,
+          fontSize: 20,
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
-Widget _textFieldSenha() {
-  return TextFormField(
-    // autofocus: true,
-    keyboardType: TextInputType.text,
-    obscureText: true,
-    decoration: InputDecoration(
-      labelText: "Senha",
-      labelStyle: TextStyle(
-        color: Colors.black38,
-        fontWeight: FontWeight.w400,
-        fontSize: 20,
+  Widget _textFieldSenha() {
+    return TextFormField(
+      // autofocus: true,
+      controller: txtSenha,
+      keyboardType: TextInputType.text,
+      obscureText: true,
+      decoration: InputDecoration(
+        labelText: "Senha",
+        labelStyle: TextStyle(
+          color: Colors.black38,
+          fontWeight: FontWeight.w400,
+          fontSize: 20,
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

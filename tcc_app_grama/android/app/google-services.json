@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "419137510606",
+    "firebase_url": "https://tcc-app-grama.firebaseio.com",
+    "project_id": "tcc-app-grama",
+    "storage_bucket": "tcc-app-grama.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:419137510606:android:9b489ae27dcc5d17db049f",
+        "android_client_info": {
+          "package_name": "tcc_app_grama.teste"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "419137510606-1jfej6s7ebjc3ljlsar3rv4ptqi4h0q3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZx6wI2VfOPhQCicigXUH7BK7pwVBv3rc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "419137510606-1jfej6s7ebjc3ljlsar3rv4ptqi4h0q3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

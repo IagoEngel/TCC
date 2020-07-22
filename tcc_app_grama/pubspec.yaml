@@ -22,6 +22,8 @@ environment:
 
 dependencies:
   image_picker:
+  firebase_auth:
+  cloud_firestore:
   multi_image_picker:
   shared_preferences:
   gallery_saver:
