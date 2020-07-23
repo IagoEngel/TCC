@@ -13,6 +13,11 @@ class _CameraState extends State<Camera> {
   File _segundaImagem;
   File _terceiraImagem;
   File _quartaImagem;
+  var _cor1 = Colors.transparent;
+  var _cor2 = Colors.transparent;
+  var _cor3 = Colors.transparent;
+  var _cor4 = Colors.transparent;
+  bool erased = false;
 
   Future getImage(int i) async {
     File imagem;
@@ -51,7 +56,7 @@ class _CameraState extends State<Camera> {
         title: Text("Gramado App - TCC"),
       ),
       drawer: _drawer(),
-      body: _primeiraImagem == null
+      body: (_primeiraImagem == null && !erased)
           ? Text("Erro ao carregar a imagem")
           : SingleChildScrollView(
               child: ConstrainedBox(
@@ -61,7 +66,7 @@ class _CameraState extends State<Camera> {
                   child: Column(
                     children: [
                       _rowImagem(_primeiraImagem, _segundaImagem),
-                      SizedBox(height: 25),
+                      SizedBox(height: 15),
                       _rowImagem2(_terceiraImagem, _quartaImagem),
                       Container(
                         padding: EdgeInsets.only(
@@ -148,9 +153,12 @@ class _CameraState extends State<Camera> {
   Widget _rowImagem(File imagem1, File imagem2) {
     return Row(
       children: [
-        _grid(imagem1),
-        Expanded(child: SizedBox()),
-        (imagem2 == null) ? _addImagem(2) : _grid(imagem2),
+        (imagem1 == null)?_addImagem(1) : _grid1(imagem1),
+        Expanded(
+          child: SizedBox(),
+          flex: 1,
+        ),
+        (imagem2 == null) ? _addImagem(2) : _grid2(imagem2),
       ],
     );
   }
@@ -158,16 +166,19 @@ class _CameraState extends State<Camera> {
   Widget _rowImagem2(File imagem3, File imagem4) {
     return Row(
       children: [
-        (imagem3 == null) ? _addImagem(3) : _grid(imagem3),
-        Expanded(child: SizedBox()),
-        (imagem4 == null) ? _addImagem(4) : _grid(imagem4),
+        (imagem3 == null) ? _addImagem(3) : _grid3(imagem3),
+        Expanded(
+          child: SizedBox(),
+          flex: 1,
+        ),
+        (imagem4 == null) ? _addImagem(4) : _grid4(imagem4),
       ],
     );
   }
 
   Widget _addImagem(int i) {
     return Expanded(
-      flex: 5,
+      flex: 12,
       child: GestureDetector(
         onTap: () {
           getImage(i);
@@ -187,11 +198,83 @@ class _CameraState extends State<Camera> {
     );
   }
 
-  Widget _grid(File imagem) {
-    return Image.file(
-      imagem,
-      fit: BoxFit.contain,
-      height: 220,
+  Widget _grid1(File imagem) {
+    return GestureDetector(
+      onTap: (){
+        setState(() {
+          (_cor1 == Colors.transparent) ? _cor1 = Colors.blue : _cor1 = Colors.transparent;
+        });
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: _cor1),
+        ),
+        child: Image.file(
+          imagem,
+          fit: BoxFit.contain,
+          height: 220,
+        ),
+      ),
+    );
+  }
+
+  Widget _grid2(File imagem) {
+    return GestureDetector(
+      onTap: (){
+        setState(() {
+          (_cor2 == Colors.transparent) ? _cor2 = Colors.blue : _cor2 = Colors.transparent;
+        });
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: _cor2),
+        ),
+        child: Image.file(
+          imagem,
+          fit: BoxFit.contain,
+          height: 220,
+        ),
+      ),
+    );
+  }
+
+  Widget _grid3(File imagem) {
+    return GestureDetector(
+      onTap: (){
+        setState(() {
+          (_cor3 == Colors.transparent) ? _cor3 = Colors.blue : _cor3 = Colors.transparent;
+        });
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: _cor3),
+        ),
+        child: Image.file(
+          imagem,
+          fit: BoxFit.contain,
+          height: 220,
+        ),
+      ),
+    );
+  }
+
+  Widget _grid4(File imagem) {
+    return GestureDetector(
+      onTap: (){
+        setState(() {
+          (_cor4 == Colors.transparent) ? _cor4 = Colors.blue : _cor4 = Colors.transparent;
+        });
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: _cor4),
+        ),
+        child: Image.file(
+          imagem,
+          fit: BoxFit.contain,
+          height: 220,
+        ),
+      ),
     );
   }
 
@@ -212,7 +295,14 @@ class _CameraState extends State<Camera> {
           ),
         ],
       ),
-      onPressed: () {},
+      onPressed: () {
+        setState(() {
+          _cor1 = Colors.blue;
+          _cor2 = Colors.blue;
+          _cor3 = Colors.blue;
+          _cor4 = Colors.blue;
+        });
+      },
     );
   }
 
@@ -233,7 +323,12 @@ class _CameraState extends State<Camera> {
           ),
         ],
       ),
-      onPressed: () {},
+      onPressed: () {
+        setState(() {
+          _primeiraImagem = null;
+          erased = true;
+        });
+      },
     );
   }
 
