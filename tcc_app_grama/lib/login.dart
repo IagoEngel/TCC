@@ -78,7 +78,7 @@ class _LoginState extends State<Login> {
                         if (result == null) {
                           print('error signing in');
                         } else {
-                          print('signed in');
+                          print('USUÁRIO LOGADO');
                         }
                         Navigator.push(
                             context,

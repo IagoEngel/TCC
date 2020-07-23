@@ -10,21 +10,37 @@ class Camera extends StatefulWidget {
 
 class _CameraState extends State<Camera> {
   File _primeiraImagem;
+  File _segundaImagem;
+  File _terceiraImagem;
+  File _quartaImagem;
 
-  Future getImage(File img) async {
+  Future getImage(int i) async {
     File imagem;
 
     imagem = await ImagePicker.pickImage(source: ImageSource.camera);
 
-    setState(() {
-      img = imagem;
-    });
+    if (i == 1)
+      setState(() {
+        _primeiraImagem = imagem;
+      });
+    else if (i == 2)
+      setState(() {
+        _segundaImagem = imagem;
+      });
+    else if (i == 3)
+      setState(() {
+        _terceiraImagem = imagem;
+      });
+    else
+      setState(() {
+        _quartaImagem = imagem;
+      });
   }
 
   @override
   void initState() {
     super.initState();
-    getImage(_primeiraImagem);
+    getImage(1);
   }
 
   @override
@@ -44,12 +60,12 @@ class _CameraState extends State<Camera> {
                   margin: EdgeInsets.only(top: 24, left: 24, right: 24),
                   child: Column(
                     children: [
-                      _rowImagem(_primeiraImagem),
+                      _rowImagem(_primeiraImagem, _segundaImagem),
                       SizedBox(height: 25),
-                      _rowImagem(_primeiraImagem),
+                      _rowImagem2(_terceiraImagem, _quartaImagem),
                       Container(
                         padding: EdgeInsets.only(
-                            top: 10, left: 70, right: 70, bottom: 10),
+                            top: 20, left: 70, right: 70, bottom: 10),
                         child: Column(
                           children: [
                             _rowSeleciona(),
@@ -129,13 +145,45 @@ class _CameraState extends State<Camera> {
     );
   }
 
-  Widget _rowImagem(imagem){
+  Widget _rowImagem(File imagem1, File imagem2) {
     return Row(
       children: [
-        _grid(imagem),
+        _grid(imagem1),
         Expanded(child: SizedBox()),
-        _grid(imagem),
+        (imagem2 == null) ? _addImagem(2) : _grid(imagem2),
       ],
+    );
+  }
+
+  Widget _rowImagem2(File imagem3, File imagem4) {
+    return Row(
+      children: [
+        (imagem3 == null) ? _addImagem(3) : _grid(imagem3),
+        Expanded(child: SizedBox()),
+        (imagem4 == null) ? _addImagem(4) : _grid(imagem4),
+      ],
+    );
+  }
+
+  Widget _addImagem(int i) {
+    return Expanded(
+      flex: 5,
+      child: GestureDetector(
+        onTap: () {
+          getImage(i);
+        },
+        child: Container(
+          height: 220,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black, width: 2),
+          ),
+          child: Icon(
+            Icons.add_a_photo,
+            color: Colors.black,
+            size: 40,
+          ),
+        ),
+      ),
     );
   }
 
