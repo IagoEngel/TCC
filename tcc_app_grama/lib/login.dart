@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:tcc_app_grama/services/auth.dart';
 import 'package:tcc_app_grama/signup.dart';
 import 'package:tcc_app_grama/telas/tela_inicial.dart';
+import 'package:tcc_app_grama/repository/datauser.dart';
+import 'package:tcc_app_grama/models/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Login extends StatefulWidget {
   int qtdTentativas = 1;
@@ -11,7 +14,9 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  User user = new User();
   final AuthService _auth = AuthService();
+  UserRepository repository = UserRepository();
   TextEditingController txtEmail = TextEditingController();
   TextEditingController txtSenha = TextEditingController();
 
@@ -80,10 +85,14 @@ class _LoginState extends State<Login> {
                         } else {
                           print('USUÁRIO LOGADO');
                         }
+                        await _getUser(txtEmail.text).then((QuerySnapshot docs){
+                          user.email = docs.documents[0].data['email'];
+                          user.nome = docs.documents[0].data['nome'];
+                        });
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => TelaInicial()));
+                                builder: (context) => TelaInicial(user: user)));
                       },
                     ),
                   ),
@@ -107,6 +116,13 @@ class _LoginState extends State<Login> {
             ),
           ),
         ));
+  }
+
+  _getUser(String email) {
+    return Firestore.instance
+        .collection('usuario')
+        .where('email', isEqualTo: email)
+        .getDocuments();
   }
 
   Widget _textFieldEmail() {

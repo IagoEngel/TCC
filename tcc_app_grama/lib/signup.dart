@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:tcc_app_grama/login.dart';
 import 'package:tcc_app_grama/services/auth.dart';
+import 'package:tcc_app_grama/repository/datauser.dart';
+import 'package:tcc_app_grama/models/user.dart';
 
 class SignupPage extends StatelessWidget {
   final AuthService _auth = AuthService();
+  UserRepository repository = UserRepository();
+  TextEditingController txtNome = TextEditingController();
   TextEditingController txtEmail = TextEditingController();
   TextEditingController txtSenha = TextEditingController();
 
@@ -30,12 +34,12 @@ class SignupPage extends StatelessWidget {
                 ),
               ),
             ),
-            Icon(Icons.person),
             SizedBox(
               height: 20,
             ),
             TextFormField(
               // autofocus: true,
+              controller: txtNome,
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 labelText: "Nome",
@@ -110,8 +114,14 @@ class SignupPage extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                     onPressed: () async {
-                      await _auth.createEmailPasswd(txtEmail.text, txtSenha.text);
-                      
+                      await _auth.createEmailPasswd(
+                          txtEmail.text, txtSenha.text);
+                      await repository.addUser(
+                        User(
+                          nome: txtNome.text,
+                          email: txtEmail.text,
+                        ),
+                      );
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => Login()),

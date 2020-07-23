@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:tcc_app_grama/telas/camera_screen.dart';
+import 'package:tcc_app_grama/models/user.dart';
 
 class TelaInicial extends StatefulWidget {
+  User user;
+
+  TelaInicial({@required this.user});
+
   @override
   _TelaInicialState createState() => _TelaInicialState();
 }
@@ -59,8 +64,34 @@ class _TelaInicialState extends State<TelaInicial> {
       ),
     );
   }
+
+  
+Widget _contaUsuario() {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      CircleAvatar(
+        backgroundColor: Color.fromRGBO(27, 67, 50, 1.0),
+        radius: 42,
+        child: CircleAvatar(
+          backgroundColor: Colors.white,
+          foregroundColor: Color.fromRGBO(33, 37, 41, 1.0),
+          radius: 38,
+          child: Icon(Icons.person, size: 60),
+        ),
+      ),
+      Expanded(
+        child: SizedBox(),
+      ),
+      Text(
+        "${widget.user.email}",
+        style: TextStyle(fontSize: 23),
+      ),
+    ],
+  );
 }
 
+  
 Widget _drawer() {
   return Drawer(
     child: ListView(
@@ -98,27 +129,5 @@ Widget _drawer() {
   );
 }
 
-Widget _contaUsuario() {
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      CircleAvatar(
-        backgroundColor: Color.fromRGBO(27, 67, 50, 1.0),
-        radius: 42,
-        child: CircleAvatar(
-          backgroundColor: Colors.white,
-          foregroundColor: Color.fromRGBO(33, 37, 41, 1.0),
-          radius: 38,
-          child: Icon(Icons.person, size: 60),
-        ),
-      ),
-      Expanded(
-        child: SizedBox(),
-      ),
-      Text(
-        "emailUsuario@email.br",
-        style: TextStyle(fontSize: 23),
-      ),
-    ],
-  );
 }
+
