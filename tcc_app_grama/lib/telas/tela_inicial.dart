@@ -55,7 +55,7 @@ class _TelaInicialState extends State<TelaInicial> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Camera()),
+                  MaterialPageRoute(builder: (context) => Camera(user: widget.user)),
                 );
               },
             ),

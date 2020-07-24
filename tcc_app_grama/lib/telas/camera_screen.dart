@@ -2,8 +2,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
+import '../models/user.dart';
 
 class Camera extends StatefulWidget {
+  User user;
+
+  Camera({@required this.user});
+
   @override
   _CameraState createState() => _CameraState();
 }
@@ -62,11 +67,11 @@ class _CameraState extends State<Camera> {
               child: ConstrainedBox(
                 constraints: BoxConstraints(),
                 child: Container(
-                  margin: EdgeInsets.only(top: 24, left: 24, right: 24),
+                  margin: EdgeInsets.only(top: 24, left: 20, right: 20),
                   child: Column(
                     children: [
                       _rowImagem(_primeiraImagem, _segundaImagem),
-                      SizedBox(height: 15),
+                      SizedBox(height: 20),
                       _rowImagem2(_terceiraImagem, _quartaImagem),
                       Container(
                         padding: EdgeInsets.only(
@@ -143,7 +148,7 @@ class _CameraState extends State<Camera> {
           child: SizedBox(),
         ),
         Text(
-          "emailUsuario@email.br",
+          "${widget.user.email}",
           style: TextStyle(fontSize: 23),
         ),
       ],
@@ -152,12 +157,10 @@ class _CameraState extends State<Camera> {
 
   Widget _rowImagem(File imagem1, File imagem2) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        (imagem1 == null)?_addImagem(1) : _grid1(imagem1),
-        Expanded(
-          child: SizedBox(),
-          flex: 1,
-        ),
+        (imagem1 == null) ? _addImagem(1) : _grid1(imagem1),
+        SizedBox(width: 29),
         (imagem2 == null) ? _addImagem(2) : _grid2(imagem2),
       ],
     );
@@ -165,12 +168,10 @@ class _CameraState extends State<Camera> {
 
   Widget _rowImagem2(File imagem3, File imagem4) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         (imagem3 == null) ? _addImagem(3) : _grid3(imagem3),
-        Expanded(
-          child: SizedBox(),
-          flex: 1,
-        ),
+        SizedBox(width: 29),
         (imagem4 == null) ? _addImagem(4) : _grid4(imagem4),
       ],
     );
@@ -178,20 +179,24 @@ class _CameraState extends State<Camera> {
 
   Widget _addImagem(int i) {
     return Expanded(
-      flex: 12,
       child: GestureDetector(
         onTap: () {
           getImage(i);
         },
         child: Container(
-          height: 220,
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.black, width: 2),
+            border: Border.all(color: Colors.transparent, width: 3),
           ),
-          child: Icon(
-            Icons.add_a_photo,
-            color: Colors.black,
-            size: 40,
+          child: Container(
+            height: 220,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black, width: 3),
+            ),
+            child: Icon(
+              Icons.add_a_photo,
+              color: Colors.black,
+              size: 40,
+            ),
           ),
         ),
       ),
@@ -200,14 +205,16 @@ class _CameraState extends State<Camera> {
 
   Widget _grid1(File imagem) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         setState(() {
-          (_cor1 == Colors.transparent) ? _cor1 = Colors.blue : _cor1 = Colors.transparent;
+          (_cor1 == Colors.transparent)
+              ? _cor1 = Colors.blue
+              : _cor1 = Colors.transparent;
         });
       },
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: _cor1),
+          border: Border.all(color: _cor1, width: 3),
         ),
         child: Image.file(
           imagem,
@@ -220,14 +227,16 @@ class _CameraState extends State<Camera> {
 
   Widget _grid2(File imagem) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         setState(() {
-          (_cor2 == Colors.transparent) ? _cor2 = Colors.blue : _cor2 = Colors.transparent;
+          (_cor2 == Colors.transparent)
+              ? _cor2 = Colors.blue
+              : _cor2 = Colors.transparent;
         });
       },
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: _cor2),
+          border: Border.all(color: _cor2, width: 3),
         ),
         child: Image.file(
           imagem,
@@ -240,14 +249,16 @@ class _CameraState extends State<Camera> {
 
   Widget _grid3(File imagem) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         setState(() {
-          (_cor3 == Colors.transparent) ? _cor3 = Colors.blue : _cor3 = Colors.transparent;
+          (_cor3 == Colors.transparent)
+              ? _cor3 = Colors.blue
+              : _cor3 = Colors.transparent;
         });
       },
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: _cor3),
+          border: Border.all(color: _cor3, width: 3),
         ),
         child: Image.file(
           imagem,
@@ -260,14 +271,16 @@ class _CameraState extends State<Camera> {
 
   Widget _grid4(File imagem) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         setState(() {
-          (_cor4 == Colors.transparent) ? _cor4 = Colors.blue : _cor4 = Colors.transparent;
+          (_cor4 == Colors.transparent)
+              ? _cor4 = Colors.blue
+              : _cor4 = Colors.transparent;
         });
       },
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: _cor4),
+          border: Border.all(color: _cor4, width: 3),
         ),
         child: Image.file(
           imagem,
@@ -325,8 +338,23 @@ class _CameraState extends State<Camera> {
       ),
       onPressed: () {
         setState(() {
-          _primeiraImagem = null;
-          erased = true;
+          if (_cor1 == Colors.blue) {
+            _primeiraImagem = null;
+            _cor1 = Colors.transparent;
+            erased = true;
+          }
+          if (_cor2 == Colors.blue) {
+            _segundaImagem = null;
+            _cor2 = Colors.transparent;
+          }
+          if (_cor3 == Colors.blue) {
+            _terceiraImagem = null;
+            _cor3 = Colors.transparent;
+          }
+          if (_cor4 == Colors.blue) {
+            _quartaImagem = null;
+            _cor4 = Colors.transparent;
+          }
         });
       },
     );
