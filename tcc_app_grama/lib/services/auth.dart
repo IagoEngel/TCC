@@ -14,7 +14,7 @@ class AuthService {
     }
   }
 
-  Future signOff(String email, String passwd) async{
+  Future signOff() async{
     await _auth.signOut();
   }
 

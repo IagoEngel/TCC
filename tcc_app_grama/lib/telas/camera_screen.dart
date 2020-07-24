@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tcc_app_grama/services/auth.dart';
 import '../models/user.dart';
 
 class Camera extends StatefulWidget {
@@ -14,6 +15,7 @@ class Camera extends StatefulWidget {
 }
 
 class _CameraState extends State<Camera> {
+  AuthService _auth = AuthService();
   File _primeiraImagem;
   File _segundaImagem;
   File _terceiraImagem;
@@ -123,7 +125,10 @@ class _CameraState extends State<Camera> {
               'Desconectar',
               style: TextStyle(fontSize: 16),
             ),
-            onTap: () {},
+            onTap: () async {
+              await _auth.signOff();
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            },
           ),
         ],
       ),
