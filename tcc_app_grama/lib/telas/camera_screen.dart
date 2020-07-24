@@ -71,7 +71,7 @@ class _CameraState extends State<Camera> {
                   child: Column(
                     children: [
                       _rowImagem(_primeiraImagem, _segundaImagem),
-                      SizedBox(height: 20),
+                      SizedBox(height: 10),
                       _rowImagem2(_terceiraImagem, _quartaImagem),
                       Container(
                         padding: EdgeInsets.only(
@@ -160,7 +160,7 @@ class _CameraState extends State<Camera> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         (imagem1 == null) ? _addImagem(1) : _grid1(imagem1),
-        SizedBox(width: 29),
+        Expanded(child: SizedBox()),
         (imagem2 == null) ? _addImagem(2) : _grid2(imagem2),
       ],
     );
@@ -171,32 +171,31 @@ class _CameraState extends State<Camera> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         (imagem3 == null) ? _addImagem(3) : _grid3(imagem3),
-        SizedBox(width: 29),
+        Expanded(child: SizedBox()),
         (imagem4 == null) ? _addImagem(4) : _grid4(imagem4),
       ],
     );
   }
 
   Widget _addImagem(int i) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: () {
-          getImage(i);
-        },
+    return GestureDetector(
+      onTap: () {
+        getImage(i);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.transparent, width: 3),
+        ),
         child: Container(
+          height: 220,
+          width: 165,
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.transparent, width: 3),
+            border: Border.all(color: Colors.black, width: 3),
           ),
-          child: Container(
-            height: 220,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black, width: 3),
-            ),
-            child: Icon(
-              Icons.add_a_photo,
-              color: Colors.black,
-              size: 40,
-            ),
+          child: Icon(
+            Icons.add_a_photo,
+            color: Colors.black,
+            size: 40,
           ),
         ),
       ),
