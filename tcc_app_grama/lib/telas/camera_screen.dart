@@ -49,6 +49,29 @@ class _CameraState extends State<Camera> {
       });
   }
 
+  Future getImageGaleria(int i) async {
+    File imagem;
+
+    imagem = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    if (i == 1)
+      setState(() {
+        _primeiraImagem = imagem;
+      });
+    else if (i == 2)
+      setState(() {
+        _segundaImagem = imagem;
+      });
+    else if (i == 3)
+      setState(() {
+        _terceiraImagem = imagem;
+      });
+    else
+      setState(() {
+        _quartaImagem = imagem;
+      });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -185,7 +208,34 @@ class _CameraState extends State<Camera> {
   Widget _addImagem(int i) {
     return GestureDetector(
       onTap: () {
-        getImage(i);
+        return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.camera_alt),
+                    title: Text("Câmera"),
+                    onTap: (){
+                      getImage(i);
+                    },
+                  ),
+                  Divider(thickness: 2.5),
+                  ListTile(
+                    leading: Icon(Icons.perm_media),
+                    title: Text("Galeria"),
+                    onTap: (){
+                      getImageGaleria(i);
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
+        );
       },
       child: Container(
         decoration: BoxDecoration(
@@ -224,6 +274,7 @@ class _CameraState extends State<Camera> {
           imagem,
           fit: BoxFit.contain,
           height: 220,
+          width: 165,
         ),
       ),
     );
@@ -246,6 +297,7 @@ class _CameraState extends State<Camera> {
           imagem,
           fit: BoxFit.contain,
           height: 220,
+          width: 165,
         ),
       ),
     );
@@ -268,6 +320,7 @@ class _CameraState extends State<Camera> {
           imagem,
           fit: BoxFit.contain,
           height: 220,
+          width: 165,
         ),
       ),
     );
@@ -290,6 +343,7 @@ class _CameraState extends State<Camera> {
           imagem,
           fit: BoxFit.contain,
           height: 220,
+          width: 165,
         ),
       ),
     );
@@ -305,11 +359,12 @@ class _CameraState extends State<Camera> {
       child: Row(
         children: [
           Icon(Icons.check, size: 20),
-          SizedBox(width: 12),
+          Expanded(child: SizedBox()),
           Text(
             "Selecionar todos",
             style: TextStyle(fontSize: 18),
           ),
+          Expanded(child: SizedBox()),
         ],
       ),
       onPressed: () {
@@ -333,11 +388,12 @@ class _CameraState extends State<Camera> {
       child: Row(
         children: [
           Icon(Icons.clear, size: 20),
-          SizedBox(width: 18),
+          Expanded(child: SizedBox()),
           Text(
             "Excluir seleção",
             style: TextStyle(fontSize: 18),
           ),
+          Expanded(child: SizedBox()),
         ],
       ),
       onPressed: () {
@@ -374,15 +430,46 @@ class _CameraState extends State<Camera> {
       child: Row(
         children: [
           Icon(Icons.send, size: 18),
-          SizedBox(width: 24),
+          Expanded(child: SizedBox()),
           Text(
             "Analisar fotos",
             style: TextStyle(fontSize: 18),
           ),
+          Expanded(child: SizedBox()),
         ],
       ),
       onPressed: () {
-        GallerySaver.saveImage(_primeiraImagem.path);
+        if (_primeiraImagem != null &&
+            _segundaImagem != null &&
+            _terceiraImagem != null &&
+            _quartaImagem != null) {
+          GallerySaver.saveImage(_primeiraImagem.path);
+          GallerySaver.saveImage(_segundaImagem.path);
+          GallerySaver.saveImage(_terceiraImagem.path);
+          GallerySaver.saveImage(_quartaImagem.path);
+        } else {
+          return showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30)),
+                title: Column(
+                  children: [
+                    Icon(
+                      Icons.warning,
+                      color: Colors.red,
+                      size: 70,
+                    ),
+                    SizedBox(height: 10),
+                    Text("É necessário quatro \nfotos para continuar"),
+                    SizedBox(height: 10),
+                  ],
+                ),
+              );
+            },
+          );
+        }
       },
     );
   }

@@ -24,7 +24,7 @@ dependencies:
   image_picker:
   firebase_auth:
   cloud_firestore:
-  multi_image_picker:
+  flutter_palette:
   shared_preferences:
   gallery_saver:
   flutter:
