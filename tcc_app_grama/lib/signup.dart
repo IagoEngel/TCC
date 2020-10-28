@@ -15,8 +15,8 @@ class SignupPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        title: new Text('Cadastre-Se'),
-        backgroundColor: Colors.green,
+        title: new Text('Cadastre-Se',style: TextStyle(fontSize: 24),),
+        backgroundColor: Color.fromRGBO(59, 39, 42, 1.0),
       ),
       body: Container(
         padding: EdgeInsets.only(top: 10, left: 40, right: 40),
@@ -29,7 +29,7 @@ class SignupPage extends StatelessWidget {
               alignment: Alignment(0.0, 1.15),
               decoration: new BoxDecoration(
                 image: new DecorationImage(
-                  image: AssetImage("assets/cadastro.jpg"),
+                  image: AssetImage("assets/iconLogin.png"),
                   fit: BoxFit.fitHeight,
                 ),
               ),
@@ -91,13 +91,13 @@ class SignupPage extends StatelessWidget {
               style: TextStyle(fontSize: 20),
             ),
             SizedBox(
-              height: 10,
+              height: 100,
             ),
             Container(
               height: 60,
               alignment: Alignment.centerLeft,
               decoration: BoxDecoration(
-                color: Colors.green,
+                color: Color.fromRGBO(59, 39, 42, 1.0),
                 borderRadius: BorderRadius.all(
                   Radius.circular(5),
                 ),
@@ -109,7 +109,7 @@ class SignupPage extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 22,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -139,6 +139,7 @@ class SignupPage extends StatelessWidget {
                 child: Text(
                   "Cancelar",
                   textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 18),
                 ),
                 onPressed: () => Navigator.pop(context, false),
               ),

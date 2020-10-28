@@ -24,8 +24,13 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: new AppBar(
-          title: new Text('Já tem uma conta? Entre!'),
-          backgroundColor: Colors.green,
+          title: Center(
+            child: new Text(
+              'Já tem uma conta? Entre!',
+              style: TextStyle(fontSize: 24),
+            ),
+          ),
+          backgroundColor: Color.fromRGBO(59, 39, 42, 1.0),
         ),
         backgroundColor: Colors.white,
         body: Container(
@@ -39,7 +44,7 @@ class _LoginState extends State<Login> {
                   alignment: Alignment(0.0, 1.15),
                   decoration: new BoxDecoration(
                     image: new DecorationImage(
-                      image: AssetImage("assets/login.png"),
+                      image: AssetImage("assets/iconLogin.png"),
                       fit: BoxFit.fitHeight,
                     ),
                   ),
@@ -61,7 +66,7 @@ class _LoginState extends State<Login> {
                   height: 60,
                   alignment: Alignment.centerLeft,
                   decoration: BoxDecoration(
-                    color: Colors.green,
+                    color: Color.fromRGBO(59, 39, 42, 1.0),
                     borderRadius: BorderRadius.all(
                       Radius.circular(5),
                     ),
@@ -73,7 +78,7 @@ class _LoginState extends State<Login> {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
-                          fontSize: 20,
+                          fontSize: 22,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -85,7 +90,8 @@ class _LoginState extends State<Login> {
                         } else {
                           print('USUÁRIO LOGADO');
                         }
-                        await _getUser(txtEmail.text).then((QuerySnapshot docs){
+                        await _getUser(txtEmail.text)
+                            .then((QuerySnapshot docs) {
                           user.email = docs.documents[0].data['email'];
                           user.nome = docs.documents[0].data['nome'];
                         });
@@ -104,6 +110,7 @@ class _LoginState extends State<Login> {
                       child: Text(
                         "Cadastre-se",
                         textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 18),
                       ),
                       onPressed: () {
                         Navigator.push(

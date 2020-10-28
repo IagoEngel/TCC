@@ -25,8 +25,8 @@ dependencies:
   firebase_auth:
   cloud_firestore:
   flutter_palette:
-  shared_preferences:
   gallery_saver:
+  palette_generator:
   flutter:
     sdk: flutter
 
@@ -80,9 +80,5 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 
   assets:
-    - assets/grama.jpeg
-    - assets/reset-password-icon.png
-    - assets/grass.jpg
-    - assets/cadastro.jpg
-    - assets/login.png
+    - assets/
  

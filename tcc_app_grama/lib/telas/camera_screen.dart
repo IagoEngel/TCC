@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:palette_generator/palette_generator.dart';
 import 'package:tcc_app_grama/services/auth.dart';
 import '../models/user.dart';
 
@@ -82,17 +83,22 @@ class _CameraState extends State<Camera> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(45, 106, 79, 1.0),
-        title: Text("Gramado App - TCC"),
+        backgroundColor: Color.fromRGBO(59, 39, 42, 1.0),
+        title: Text(
+          "Gramado App - TCC",
+          style: TextStyle(fontSize: 24),
+        ),
       ),
       drawer: _drawer(),
+      backgroundColor: Color.fromRGBO(59, 39, 42, 1.0),
       body: (_primeiraImagem == null && !erased)
           ? Text("Erro ao carregar a imagem")
           : SingleChildScrollView(
               child: ConstrainedBox(
                 constraints: BoxConstraints(),
                 child: Container(
-                  margin: EdgeInsets.only(top: 24, left: 20, right: 20),
+                  padding: EdgeInsets.only(top: 34, left: 20, right: 20),
+                  color: Colors.white,
                   child: Column(
                     children: [
                       _rowImagem(_primeiraImagem, _segundaImagem),
@@ -100,10 +106,9 @@ class _CameraState extends State<Camera> {
                       _rowImagem2(_terceiraImagem, _quartaImagem),
                       Container(
                         padding: EdgeInsets.only(
-                            top: 20, left: 70, right: 70, bottom: 10),
+                            top: 50, left: 70, right: 70, bottom: 10),
                         child: Column(
                           children: [
-                            _rowSeleciona(),
                             _rowExcluir(),
                             _rowAnalisar(),
                           ],
@@ -212,14 +217,15 @@ class _CameraState extends State<Camera> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25)),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ListTile(
                     leading: Icon(Icons.camera_alt),
                     title: Text("Câmera"),
-                    onTap: (){
+                    onTap: () {
                       getImage(i);
                     },
                   ),
@@ -227,7 +233,7 @@ class _CameraState extends State<Camera> {
                   ListTile(
                     leading: Icon(Icons.perm_media),
                     title: Text("Galeria"),
-                    onTap: (){
+                    onTap: () {
                       getImageGaleria(i);
                     },
                   ),
@@ -262,7 +268,7 @@ class _CameraState extends State<Camera> {
       onTap: () {
         setState(() {
           (_cor1 == Colors.transparent)
-              ? _cor1 = Colors.blue
+              ? _cor1 = Color.fromRGBO(250, 37, 62, 1.0)
               : _cor1 = Colors.transparent;
         });
       },
@@ -285,7 +291,7 @@ class _CameraState extends State<Camera> {
       onTap: () {
         setState(() {
           (_cor2 == Colors.transparent)
-              ? _cor2 = Colors.blue
+              ? _cor2 = Color.fromRGBO(250, 37, 62, 1.0)
               : _cor2 = Colors.transparent;
         });
       },
@@ -308,7 +314,7 @@ class _CameraState extends State<Camera> {
       onTap: () {
         setState(() {
           (_cor3 == Colors.transparent)
-              ? _cor3 = Colors.blue
+              ? _cor3 = Color.fromRGBO(250, 37, 62, 1.0)
               : _cor3 = Colors.transparent;
         });
       },
@@ -331,7 +337,7 @@ class _CameraState extends State<Camera> {
       onTap: () {
         setState(() {
           (_cor4 == Colors.transparent)
-              ? _cor4 = Colors.blue
+              ? _cor4 = Color.fromRGBO(250, 37, 62, 1.0)
               : _cor4 = Colors.transparent;
         });
       },
@@ -349,38 +355,9 @@ class _CameraState extends State<Camera> {
     );
   }
 
-  Widget _rowSeleciona() {
-    return RaisedButton(
-      color: Color.fromRGBO(0, 123, 255, 1.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      textColor: Colors.white,
-      child: Row(
-        children: [
-          Icon(Icons.check, size: 20),
-          Expanded(child: SizedBox()),
-          Text(
-            "Selecionar todos",
-            style: TextStyle(fontSize: 18),
-          ),
-          Expanded(child: SizedBox()),
-        ],
-      ),
-      onPressed: () {
-        setState(() {
-          _cor1 = Colors.blue;
-          _cor2 = Colors.blue;
-          _cor3 = Colors.blue;
-          _cor4 = Colors.blue;
-        });
-      },
-    );
-  }
-
   Widget _rowExcluir() {
     return RaisedButton(
-      color: Color.fromRGBO(187, 0, 0, 1.0),
+      color: Color.fromRGBO(250, 37, 62, 1.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
       ),
@@ -398,20 +375,20 @@ class _CameraState extends State<Camera> {
       ),
       onPressed: () {
         setState(() {
-          if (_cor1 == Colors.blue) {
+          if (_cor1 == Color.fromRGBO(250, 37, 62, 1.0)) {
             _primeiraImagem = null;
             _cor1 = Colors.transparent;
             erased = true;
           }
-          if (_cor2 == Colors.blue) {
+          if (_cor2 == Color.fromRGBO(250, 37, 62, 1.0)) {
             _segundaImagem = null;
             _cor2 = Colors.transparent;
           }
-          if (_cor3 == Colors.blue) {
+          if (_cor3 == Color.fromRGBO(250, 37, 62, 1.0)) {
             _terceiraImagem = null;
             _cor3 = Colors.transparent;
           }
-          if (_cor4 == Colors.blue) {
+          if (_cor4 == Color.fromRGBO(250, 37, 62, 1.0)) {
             _quartaImagem = null;
             _cor4 = Colors.transparent;
           }
@@ -420,9 +397,26 @@ class _CameraState extends State<Camera> {
     );
   }
 
+  Future<PaletteGenerator> _getCorDominante(int i) async {
+    var cores;
+    if (i == 1)
+      cores = await PaletteGenerator.fromImageProvider(
+          Image.file(_primeiraImagem).image);
+    if (i == 2)
+      cores = await PaletteGenerator.fromImageProvider(
+          Image.file(_segundaImagem).image);
+    if (i == 3)
+      cores = await PaletteGenerator.fromImageProvider(
+          Image.file(_terceiraImagem).image);
+    if (i == 4)
+      cores = await PaletteGenerator.fromImageProvider(
+          Image.file(_quartaImagem).image);
+    return cores;
+  }
+
   Widget _rowAnalisar() {
     return RaisedButton(
-      color: Color.fromRGBO(0, 100, 7, 1.0),
+      color: Color.fromRGBO(138, 0, 16, 1.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
       ),
@@ -438,15 +432,34 @@ class _CameraState extends State<Camera> {
           Expanded(child: SizedBox()),
         ],
       ),
-      onPressed: () {
-        if (_primeiraImagem != null &&
+      onPressed: () async {
+        if (_primeiraImagem !=
+                null /*  &&
             _segundaImagem != null &&
             _terceiraImagem != null &&
-            _quartaImagem != null) {
-          GallerySaver.saveImage(_primeiraImagem.path);
-          GallerySaver.saveImage(_segundaImagem.path);
-          GallerySaver.saveImage(_terceiraImagem.path);
-          GallerySaver.saveImage(_quartaImagem.path);
+            _quartaImagem != null */
+            ) {
+          /* await GallerySaver.saveImage(_primeiraImagem.path);
+          await GallerySaver.saveImage(_segundaImagem.path);
+          await GallerySaver.saveImage(_terceiraImagem.path);
+          await GallerySaver.saveImage(_quartaImagem.path); */
+          return showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30)),
+                title: Column(
+                  children: [
+                    _dialogAnalisandoFotos(1),
+                    _dialogAnalisandoFotos(2),
+                    _dialogAnalisandoFotos(3),
+                    _dialogAnalisandoFotos(4),
+                  ],
+                ),
+              );
+            },
+          );
         } else {
           return showDialog(
             context: context,
@@ -469,6 +482,30 @@ class _CameraState extends State<Camera> {
               );
             },
           );
+        }
+      },
+    );
+  }
+
+  Widget _dialogAnalisandoFotos(int i) {
+    return FutureBuilder<PaletteGenerator>(
+      future: _getCorDominante(i),
+      builder:
+          (BuildContext context, AsyncSnapshot<PaletteGenerator> snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return CircularProgressIndicator();
+          default:
+            if (snapshot.hasError)
+              return Text('Ops ocorreu um erro: ${snapshot.error}');
+            else {
+              return Column(
+                children: [
+                  Text("Cor da imagem $i:"),
+                  Container(height: 50,width: 50, color: snapshot.data.dominantColor.color),
+                ],
+              );
+            }
         }
       },
     );
