@@ -20,11 +20,9 @@ class _CameraState extends State<Camera> {
   File _primeiraImagem;
   File _segundaImagem;
   File _terceiraImagem;
-  File _quartaImagem;
   var _cor1 = Colors.transparent;
   var _cor2 = Colors.transparent;
   var _cor3 = Colors.transparent;
-  var _cor4 = Colors.transparent;
   bool erased = false;
 
   Future getImage(int i) async {
@@ -40,13 +38,9 @@ class _CameraState extends State<Camera> {
       setState(() {
         _segundaImagem = imagem;
       });
-    else if (i == 3)
-      setState(() {
-        _terceiraImagem = imagem;
-      });
     else
       setState(() {
-        _quartaImagem = imagem;
+        _terceiraImagem = imagem;
       });
   }
 
@@ -63,13 +57,9 @@ class _CameraState extends State<Camera> {
       setState(() {
         _segundaImagem = imagem;
       });
-    else if (i == 3)
-      setState(() {
-        _terceiraImagem = imagem;
-      });
     else
       setState(() {
-        _quartaImagem = imagem;
+        _terceiraImagem = imagem;
       });
   }
 
@@ -96,26 +86,41 @@ class _CameraState extends State<Camera> {
           : SingleChildScrollView(
               child: ConstrainedBox(
                 constraints: BoxConstraints(),
-                child: Container(
-                  padding: EdgeInsets.only(top: 34, left: 20, right: 20),
-                  color: Colors.white,
-                  child: Column(
-                    children: [
-                      _rowImagem(_primeiraImagem, _segundaImagem),
-                      SizedBox(height: 10),
-                      _rowImagem2(_terceiraImagem, _quartaImagem),
-                      Container(
-                        padding: EdgeInsets.only(
-                            top: 50, left: 70, right: 70, bottom: 10),
-                        child: Column(
-                          children: [
-                            _rowExcluir(),
-                            _rowAnalisar(),
-                          ],
+                child: Column(
+                  children: [
+                    //IMAGENS
+                    Container(
+                      padding: EdgeInsets.only(top: 34, left: 20, right: 20),
+                      color: Colors.white,
+                      child: Column(
+                        children: [
+                          _rowImagem(_primeiraImagem, _segundaImagem),
+                          SizedBox(height: 10),
+                          _rowImagem2(_terceiraImagem),
+                          SizedBox(height: 20),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.73,
+                      padding: EdgeInsets.only(top: 20, bottom: 20,left: 30, right:30),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
                         ),
                       ),
-                    ],
-                  ),
+                      child: Column(
+                        children: [
+                          _rowExcluir(),
+                          SizedBox(height: 8),
+                          _rowAnalisar(),
+                        ],
+                      ),
+                    ),
+                    //BOTÕES
+                  ],
                 ),
               ),
             ),
@@ -199,13 +204,11 @@ class _CameraState extends State<Camera> {
     );
   }
 
-  Widget _rowImagem2(File imagem3, File imagem4) {
+  Widget _rowImagem2(File imagem3) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         (imagem3 == null) ? _addImagem(3) : _grid3(imagem3),
-        Expanded(child: SizedBox()),
-        (imagem4 == null) ? _addImagem(4) : _grid4(imagem4),
       ],
     );
   }
@@ -332,29 +335,6 @@ class _CameraState extends State<Camera> {
     );
   }
 
-  Widget _grid4(File imagem) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          (_cor4 == Colors.transparent)
-              ? _cor4 = Color.fromRGBO(250, 37, 62, 1.0)
-              : _cor4 = Colors.transparent;
-        });
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: _cor4, width: 3),
-        ),
-        child: Image.file(
-          imagem,
-          fit: BoxFit.contain,
-          height: 220,
-          width: 165,
-        ),
-      ),
-    );
-  }
-
   Widget _rowExcluir() {
     return RaisedButton(
       color: Color.fromRGBO(250, 37, 62, 1.0),
@@ -388,10 +368,6 @@ class _CameraState extends State<Camera> {
             _terceiraImagem = null;
             _cor3 = Colors.transparent;
           }
-          if (_cor4 == Color.fromRGBO(250, 37, 62, 1.0)) {
-            _quartaImagem = null;
-            _cor4 = Colors.transparent;
-          }
         });
       },
     );
@@ -408,9 +384,6 @@ class _CameraState extends State<Camera> {
     if (i == 3)
       cores = await PaletteGenerator.fromImageProvider(
           Image.file(_terceiraImagem).image);
-    if (i == 4)
-      cores = await PaletteGenerator.fromImageProvider(
-          Image.file(_quartaImagem).image);
     return cores;
   }
 
@@ -433,17 +406,10 @@ class _CameraState extends State<Camera> {
         ],
       ),
       onPressed: () async {
-        if (_primeiraImagem !=
-                null /*  &&
+        if (_primeiraImagem != null &&
             _segundaImagem != null &&
-            _terceiraImagem != null &&
-            _quartaImagem != null */
-            ) {
-          /* await GallerySaver.saveImage(_primeiraImagem.path);
-          await GallerySaver.saveImage(_segundaImagem.path);
-          await GallerySaver.saveImage(_terceiraImagem.path);
-          await GallerySaver.saveImage(_quartaImagem.path); */
-          return showDialog(
+            _terceiraImagem != null) {
+          showDialog(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
@@ -454,12 +420,14 @@ class _CameraState extends State<Camera> {
                     _dialogAnalisandoFotos(1),
                     _dialogAnalisandoFotos(2),
                     _dialogAnalisandoFotos(3),
-                    _dialogAnalisandoFotos(4),
                   ],
                 ),
               );
             },
           );
+          await GallerySaver.saveImage(_primeiraImagem.path);
+          await GallerySaver.saveImage(_segundaImagem.path);
+          await GallerySaver.saveImage(_terceiraImagem.path);
         } else {
           return showDialog(
             context: context,
@@ -475,7 +443,7 @@ class _CameraState extends State<Camera> {
                       size: 70,
                     ),
                     SizedBox(height: 10),
-                    Text("É necessário quatro \nfotos para continuar"),
+                    Text("É necessário três fotos para continuar."),
                     SizedBox(height: 10),
                   ],
                 ),
@@ -502,7 +470,10 @@ class _CameraState extends State<Camera> {
               return Column(
                 children: [
                   Text("Cor da imagem $i:"),
-                  Container(height: 50,width: 50, color: snapshot.data.dominantColor.color),
+                  Container(
+                      height: 50,
+                      width: 50,
+                      color: snapshot.data.dominantColor.color),
                 ],
               );
             }
