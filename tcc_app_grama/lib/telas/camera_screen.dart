@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:palette_generator/palette_generator.dart';
 import 'package:tcc_app_grama/services/auth.dart';
+import 'package:tcc_app_grama/telas/telacor.dart';
 import '../models/user.dart';
 
 class Camera extends StatefulWidget {
@@ -101,9 +101,11 @@ class _CameraState extends State<Camera> {
                         ],
                       ),
                     ),
+                    // BOTÕES
                     Container(
                       width: MediaQuery.of(context).size.width * 0.73,
-                      padding: EdgeInsets.only(top: 20, bottom: 20,left: 30, right:30),
+                      padding: EdgeInsets.only(
+                          top: 20, bottom: 20, left: 30, right: 30),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
@@ -119,7 +121,6 @@ class _CameraState extends State<Camera> {
                         ],
                       ),
                     ),
-                    //BOTÕES
                   ],
                 ),
               ),
@@ -373,20 +374,6 @@ class _CameraState extends State<Camera> {
     );
   }
 
-  Future<PaletteGenerator> _getCorDominante(int i) async {
-    var cores;
-    if (i == 1)
-      cores = await PaletteGenerator.fromImageProvider(
-          Image.file(_primeiraImagem).image);
-    if (i == 2)
-      cores = await PaletteGenerator.fromImageProvider(
-          Image.file(_segundaImagem).image);
-    if (i == 3)
-      cores = await PaletteGenerator.fromImageProvider(
-          Image.file(_terceiraImagem).image);
-    return cores;
-  }
-
   Widget _rowAnalisar() {
     return RaisedButton(
       color: Color.fromRGBO(138, 0, 16, 1.0),
@@ -409,25 +396,15 @@ class _CameraState extends State<Camera> {
         if (_primeiraImagem != null &&
             _segundaImagem != null &&
             _terceiraImagem != null) {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30)),
-                title: Column(
-                  children: [
-                    _dialogAnalisandoFotos(1),
-                    _dialogAnalisandoFotos(2),
-                    _dialogAnalisandoFotos(3),
-                  ],
-                ),
-              );
-            },
-          );
           await GallerySaver.saveImage(_primeiraImagem.path);
           await GallerySaver.saveImage(_segundaImagem.path);
           await GallerySaver.saveImage(_terceiraImagem.path);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TelaCor(_primeiraImagem, _segundaImagem, _terceiraImagem),
+            ),
+          );
         } else {
           return showDialog(
             context: context,
@@ -455,30 +432,4 @@ class _CameraState extends State<Camera> {
     );
   }
 
-  Widget _dialogAnalisandoFotos(int i) {
-    return FutureBuilder<PaletteGenerator>(
-      future: _getCorDominante(i),
-      builder:
-          (BuildContext context, AsyncSnapshot<PaletteGenerator> snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.waiting:
-            return CircularProgressIndicator();
-          default:
-            if (snapshot.hasError)
-              return Text('Ops ocorreu um erro: ${snapshot.error}');
-            else {
-              return Column(
-                children: [
-                  Text("Cor da imagem $i:"),
-                  Container(
-                      height: 50,
-                      width: 50,
-                      color: snapshot.data.dominantColor.color),
-                ],
-              );
-            }
-        }
-      },
-    );
-  }
 }
