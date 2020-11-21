@@ -137,6 +137,10 @@ class _CameraState extends State<Camera> {
             decoration:
                 BoxDecoration(color: Color.fromRGBO(233, 236, 239, 1.0)),
           ),
+          //INICIO
+          //INSTRULÇOES
+          //ANALISE DO GRAMADO
+          //HISTORICO DE ANALISE
           ListTile(
             leading: Icon(Icons.show_chart, color: Colors.black),
             title: Text(
