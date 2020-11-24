@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcc_app_grama/telas/camera_screen.dart';
 import 'package:tcc_app_grama/widgets/drawerheader.dart';
 
 class Menu extends StatefulWidget {
@@ -47,7 +48,7 @@ class _MenuState extends State<Menu> {
         ),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
-          if (pagina == null) {
+          if (pagina == null || titulo == "Início") {
             return null;
           } else {
             Navigator.pushReplacement(
@@ -68,7 +69,7 @@ class _MenuState extends State<Menu> {
           _divider(),
           _flatButton("Instruções", null),
           _divider(),
-          _flatButton("Análise do gramado", null),
+          _flatButton("Análise do gramado", Camera()),
           _divider(),
           _flatButton("Histórico de análise", null),
         ],

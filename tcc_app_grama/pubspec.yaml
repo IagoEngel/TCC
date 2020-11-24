@@ -22,8 +22,6 @@ environment:
 
 dependencies:
   image_picker:
-  firebase_auth:
-  cloud_firestore:
   flutter_palette:
   gallery_saver:
   palette_generator:

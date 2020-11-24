@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:tcc_app_grama/services/auth.dart';
 import 'package:tcc_app_grama/telas/camera_screen.dart';
-import 'package:tcc_app_grama/models/user.dart';
 
 class TelaInicial extends StatefulWidget {
-  User user;
-
-  TelaInicial({@required this.user});
 
   @override
   _TelaInicialState createState() => _TelaInicialState();
 }
 
 class _TelaInicialState extends State<TelaInicial> {
-  AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +19,6 @@ class _TelaInicialState extends State<TelaInicial> {
           style: TextStyle(fontSize: 24),
         ),
       ),
-      drawer: _drawer(),
       backgroundColor: Color.fromRGBO(59, 39, 42, 1.0),
       body: Container(
         padding: EdgeInsets.only(top: 40),
@@ -51,72 +44,6 @@ class _TelaInicialState extends State<TelaInicial> {
             _comecarFotos(),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _contaUsuario() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        CircleAvatar(
-          backgroundColor: Color.fromRGBO(27, 67, 50, 1.0),
-          radius: 42,
-          child: CircleAvatar(
-            backgroundColor: Colors.white,
-            foregroundColor: Color.fromRGBO(33, 37, 41, 1.0),
-            radius: 38,
-            child: Icon(Icons.person, size: 60),
-          ),
-        ),
-        Expanded(
-          child: SizedBox(),
-        ),
-        Text(
-          "${widget.user.email}",
-          style: TextStyle(fontSize: 23),
-        ),
-      ],
-    );
-  }
-
-  Widget _drawer() {
-    return Drawer(
-      child: ListView(
-        children: [
-          DrawerHeader(
-            child: _contaUsuario(),
-            decoration:
-                BoxDecoration(color: Color.fromRGBO(233, 236, 239, 1.0)),
-          ),
-          ListTile(
-            leading: Icon(Icons.show_chart, color: Colors.black),
-            title: Text(
-              "Estatísticas",
-              style: TextStyle(fontSize: 16),
-            ),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: Icon(Icons.info_outline, color: Colors.black),
-            title: Text(
-              "Informações",
-              style: TextStyle(fontSize: 16),
-            ),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: Icon(Icons.exit_to_app, color: Colors.black),
-            title: Text(
-              'Desconectar',
-              style: TextStyle(fontSize: 16),
-            ),
-            onTap: () async {
-              await _auth.signOff();
-              Navigator.of(context).popUntil((route) => route.isFirst);
-            },
-          ),
-        ],
       ),
     );
   }
@@ -208,7 +135,7 @@ class _TelaInicialState extends State<TelaInicial> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Camera(user: widget.user),
+                    builder: (context) => Camera(),
                   ));
             },
           ),
