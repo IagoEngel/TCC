@@ -1,9 +1,14 @@
+import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+import 'package:image/image.dart' as img;
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tcc_app_grama/telas/instrucoes.dart';
 import 'package:tcc_app_grama/telas/menu.dart';
-import 'package:tcc_app_grama/telas/telacor.dart';
 import 'package:tcc_app_grama/widgets/drawerheader.dart';
 
 class Camera extends StatefulWidget {
@@ -13,6 +18,10 @@ class Camera extends StatefulWidget {
 
 class _CameraState extends State<Camera> {
   File _fotoGramado;
+  final StreamController<Color> _stateController = StreamController<Color>();
+  GlobalKey imageKey = GlobalKey();
+  GlobalKey currentKey;
+  img.Image fotoAux;
 
   Future getImage() async {
     File imagem;
@@ -32,6 +41,12 @@ class _CameraState extends State<Camera> {
     setState(() {
       _fotoGramado = imagem;
     });
+  }
+
+  @override
+  void initState(){
+    currentKey = imageKey;
+    super.initState();
   }
 
   @override
@@ -66,7 +81,7 @@ class _CameraState extends State<Camera> {
                 color: Colors.white,
                 child: Column(
                   children: [
-                    _rowImagem(_fotoGramado),
+                    _rowImagem(),
                     SizedBox(height: 10),
                     SizedBox(height: 20),
                   ],
@@ -134,7 +149,7 @@ class _CameraState extends State<Camera> {
         children: [
           _flatButton("Início", Menu()),
           _divider(),
-          _flatButton("Instruções", null),
+          _flatButton("Instruções", Instrucoes()),
           _divider(),
           _flatButton("Análise do gramado", null),
           _divider(),
@@ -144,11 +159,11 @@ class _CameraState extends State<Camera> {
     );
   }
 
-  Widget _rowImagem(File imagem1) {
+  Widget _rowImagem() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        (imagem1 == null) ? _addImagem() : _grid1(imagem1),
+        (_fotoGramado == null) ? _addImagem() : _grid1(),
       ],
     );
   }
@@ -206,18 +221,88 @@ class _CameraState extends State<Camera> {
     );
   }
 
-  Widget _grid1(File imagem) {
+  Widget _grid1() {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: Color.fromRGBO(250, 37, 62, 1.0), width: 5),
       ),
-      child: Image.file(
-        imagem,
-        fit: BoxFit.contain,
-        height: 420,
-        width: 315,
+      child: StreamBuilder(
+        initialData: Colors.white,
+        stream: _stateController.stream,
+        builder: (buildContext, snapshot) {
+          Color corSelecionada = snapshot.data ?? Colors.white;
+          return Column(
+            children: [
+              RepaintBoundary(
+                child: GestureDetector(
+                  onPanDown: (details) {
+                    setState((){
+                      currentKey = imageKey;
+                    });
+                    procurarCor(details.globalPosition);
+                  },
+                  onPanUpdate: (details) {
+                    setState((){
+                      currentKey = imageKey;
+                    });
+                    procurarCor(details.globalPosition);
+                  },
+                  child: Image.file(
+                    _fotoGramado,
+                    key: imageKey,
+                    fit: BoxFit.contain,
+                    height: 420,
+                    width: 315,
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
+  }
+
+  void procurarCor(Offset globalPosition) async {
+    if (fotoAux == null) {
+      await loadImageBundleBytes();
+    }
+    _calcularPixel(globalPosition);
+  }
+
+  void _calcularPixel(Offset globalPosition) {
+    RenderBox box = currentKey.currentContext.findRenderObject();
+    Offset localPosition = box.globalToLocal(globalPosition);
+
+    double px = localPosition.dx;
+    double py = localPosition.dy;
+
+    double widgetScale = box.size.width / fotoAux.width;
+    print(py);
+    px = (px / widgetScale);
+    py = (py / widgetScale);
+
+    int pixel32 = fotoAux.getPixelSafe(px.toInt(), py.toInt());
+    int hex = abgrToArgb(pixel32);
+
+    _stateController.add(Color(hex));
+  }
+
+  Future<void> loadImageBundleBytes() async {
+    ByteData imageBytes = await _fotoGramado.readAsBytesSync;
+    setImageBytes(imageBytes);
+  }
+
+  void setImageBytes(ByteData imageBytes) {
+    List<int> values = imageBytes.buffer.asUint8List();
+    fotoAux = null;
+    fotoAux = img.decodeImage(values);
+  }
+
+  int abgrToArgb(int argbColor) {
+    int r = (argbColor >> 16) & 0xFF;
+    int b = argbColor & 0xFF;
+    return (argbColor & 0xFF00FF00) | (b << 16) | r;
   }
 
   Widget _rowExcluir() {

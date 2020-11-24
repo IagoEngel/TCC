@@ -22,6 +22,7 @@ environment:
 
 dependencies:
   image_picker:
+  image:
   flutter_palette:
   gallery_saver:
   palette_generator:

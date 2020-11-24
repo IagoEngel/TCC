@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tcc_app_grama/telas/camera_screen.dart';
+import 'package:tcc_app_grama/telas/instrucoes.dart';
 import 'package:tcc_app_grama/widgets/drawerheader.dart';
 
 class Menu extends StatefulWidget {
@@ -67,7 +68,7 @@ class _MenuState extends State<Menu> {
         children: [
           _flatButton("Início", Menu()),
           _divider(),
-          _flatButton("Instruções", null),
+          _flatButton("Instruções", Instrucoes()),
           _divider(),
           _flatButton("Análise do gramado", Camera()),
           _divider(),
@@ -85,7 +86,7 @@ class _MenuState extends State<Menu> {
           color: Colors.white.withOpacity(0.80),
           borderRadius: BorderRadius.circular(40),
         ),
-        padding: EdgeInsets.only(top: 30, bottom: 30),
+        padding: EdgeInsets.all(30),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

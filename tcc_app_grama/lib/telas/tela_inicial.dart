@@ -96,7 +96,7 @@ class _TelaInicialState extends State<TelaInicial> {
                 context: context,
                 builder: (context) => AlertDialog(
                   content: Text(
-                      "1) Você terá 4 fotos  para análise. Então, procure tirar as fotos de ângulos e posições diferentes.\n\n2)É recomendável que a camêra esteja na horizontal. E que as fotos peguem grande parte do gramado.\n\n3) Fique atento à qualquer outra coisa, que possua a cor, além do gramado na imagem tirada. Ex: árvores, outras plantas, maquinário, etc."),
+                      "1) Você terá 4 fotos para análise. Então, procure tirar as fotos de ângulos e posições diferentes.\n\n2)É recomendável que a camêra esteja na horizontal. E que as fotos peguem grande parte do gramado.\n\n3) Fique atento à qualquer outra coisa, que possua a cor, além do gramado na imagem tirada. Ex: árvores, outras plantas, maquinário, etc."),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
