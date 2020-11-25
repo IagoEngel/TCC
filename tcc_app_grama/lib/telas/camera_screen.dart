@@ -21,6 +21,8 @@ class _CameraState extends State<Camera> {
   final StreamController<Color> _stateController = StreamController<Color>();
   GlobalKey imageKey = GlobalKey();
   GlobalKey currentKey;
+  Color corBox = Colors.white;
+  Color corSelecionada;
   img.Image fotoAux;
 
   Future getImage() async {
@@ -44,7 +46,7 @@ class _CameraState extends State<Camera> {
   }
 
   @override
-  void initState(){
+  void initState() {
     currentKey = imageKey;
     super.initState();
   }
@@ -83,7 +85,8 @@ class _CameraState extends State<Camera> {
                   children: [
                     _rowImagem(),
                     SizedBox(height: 10),
-                    SizedBox(height: 20),
+                    _rowCor(),
+                    SizedBox(height: 30),
                   ],
                 ),
               ),
@@ -160,10 +163,44 @@ class _CameraState extends State<Camera> {
   }
 
   Widget _rowImagem() {
+    return StreamBuilder(
+      initialData: Colors.white,
+      stream: _stateController.stream,
+      builder: (buildContext, snapshot) {
+        corSelecionada = snapshot.data ?? Colors.white;
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            (_fotoGramado == null) ? _addImagem() : _grid1(),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _rowCor() {
+    Widget _textosCor() {
+      return Column(
+        children: [
+          Text("${corBox.toString()}"),
+        ],
+      );
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        (_fotoGramado == null) ? _addImagem() : _grid1(),
+        Container(
+          width: 100,
+          height: 100,
+          decoration: BoxDecoration(
+            color: corBox,
+            border: Border.all(color: Colors.black),
+          ),
+          child: null,
+        ),
+        SizedBox(width: 50),
+        _textosCor(),
       ],
     );
   }
@@ -226,51 +263,48 @@ class _CameraState extends State<Camera> {
       decoration: BoxDecoration(
         border: Border.all(color: Color.fromRGBO(250, 37, 62, 1.0), width: 5),
       ),
-      child: StreamBuilder(
-        initialData: Colors.white,
-        stream: _stateController.stream,
-        builder: (buildContext, snapshot) {
-          Color corSelecionada = snapshot.data ?? Colors.white;
-          return Column(
-            children: [
-              RepaintBoundary(
-                child: GestureDetector(
-                  onPanDown: (details) {
-                    setState((){
-                      currentKey = imageKey;
-                    });
-                    procurarCor(details.globalPosition);
-                  },
-                  onPanUpdate: (details) {
-                    setState((){
-                      currentKey = imageKey;
-                    });
-                    procurarCor(details.globalPosition);
-                  },
-                  child: Image.file(
-                    _fotoGramado,
-                    key: imageKey,
-                    fit: BoxFit.contain,
-                    height: 420,
-                    width: 315,
-                  ),
-                ),
+      child: Column(
+        children: [
+          RepaintBoundary(
+            child: GestureDetector(
+              onPanDown: (details) {
+                setState(() {
+                  currentKey = imageKey;
+                  corBox = corSelecionada;
+                });
+                procurarCor(details.globalPosition);
+              },
+              onPanUpdate: (details) {
+                setState(() {
+                  currentKey = imageKey;
+                  corBox = corSelecionada;
+                });
+                procurarCor(details.globalPosition);
+              },
+              child: Image.file(
+                _fotoGramado,
+                key: imageKey,
+                fit: BoxFit.contain,
+                height: 420,
+                width: 315,
               ),
-            ],
-          );
-        },
+            ),
+          ),
+        ],
       ),
     );
   }
 
   void procurarCor(Offset globalPosition) async {
     if (fotoAux == null) {
+      print("(PROCURARCOR)Path do arquivo atual: ${_fotoGramado.path}");
       await loadImageBundleBytes();
     }
     _calcularPixel(globalPosition);
   }
 
   void _calcularPixel(Offset globalPosition) {
+    print("(CALCULARPIXEL)Path do arquivo atual: ${_fotoGramado.path}");
     RenderBox box = currentKey.currentContext.findRenderObject();
     Offset localPosition = box.globalToLocal(globalPosition);
 
@@ -278,7 +312,6 @@ class _CameraState extends State<Camera> {
     double py = localPosition.dy;
 
     double widgetScale = box.size.width / fotoAux.width;
-    print(py);
     px = (px / widgetScale);
     py = (py / widgetScale);
 
@@ -289,11 +322,12 @@ class _CameraState extends State<Camera> {
   }
 
   Future<void> loadImageBundleBytes() async {
-    ByteData imageBytes = await _fotoGramado.readAsBytesSync;
+    print("(LOADIMAGE)Path do arquivo dentro de LOAD: ${_fotoGramado.path}");
+    final imageBytes = await _fotoGramado.readAsBytes();
     setImageBytes(imageBytes);
   }
 
-  void setImageBytes(ByteData imageBytes) {
+  void setImageBytes(final imageBytes) {
     List<int> values = imageBytes.buffer.asUint8List();
     fotoAux = null;
     fotoAux = img.decodeImage(values);
@@ -326,6 +360,8 @@ class _CameraState extends State<Camera> {
       onPressed: () {
         setState(() {
           _fotoGramado = null;
+          fotoAux = null;
+          corBox = Colors.white;
         });
       },
     );
