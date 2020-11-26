@@ -263,48 +263,45 @@ class _CameraState extends State<Camera> {
       decoration: BoxDecoration(
         border: Border.all(color: Color.fromRGBO(250, 37, 62, 1.0), width: 5),
       ),
-      child: Column(
-        children: [
-          RepaintBoundary(
-            child: GestureDetector(
-              onPanDown: (details) {
-                setState(() {
-                  currentKey = imageKey;
-                  corBox = corSelecionada;
-                });
-                procurarCor(details.globalPosition);
-              },
-              onPanUpdate: (details) {
-                setState(() {
-                  currentKey = imageKey;
-                  corBox = corSelecionada;
-                });
-                procurarCor(details.globalPosition);
-              },
-              child: Image.file(
-                _fotoGramado,
-                key: imageKey,
-                fit: BoxFit.contain,
-                height: 420,
-                width: 315,
-              ),
+      height: 420,
+      width: 315,
+      child: Align(
+        alignment: Alignment.center,
+        child: RepaintBoundary(
+          child: GestureDetector(
+            onPanDown: (details) {
+              setState(() {
+                currentKey = imageKey;
+                corBox = corSelecionada;
+              });
+              procurarCor(details.globalPosition);
+            },
+            onPanUpdate: (details) {
+              setState(() {
+                currentKey = imageKey;
+                corBox = corSelecionada;
+              });
+              procurarCor(details.globalPosition);
+            },
+            child: Image.file(
+              _fotoGramado,
+              key: imageKey,
+              fit: BoxFit.contain,
             ),
           ),
-        ],
+        ),
       ),
     );
   }
 
   void procurarCor(Offset globalPosition) async {
     if (fotoAux == null) {
-      print("(PROCURARCOR)Path do arquivo atual: ${_fotoGramado.path}");
       await loadImageBundleBytes();
     }
     _calcularPixel(globalPosition);
   }
 
   void _calcularPixel(Offset globalPosition) {
-    print("(CALCULARPIXEL)Path do arquivo atual: ${_fotoGramado.path}");
     RenderBox box = currentKey.currentContext.findRenderObject();
     Offset localPosition = box.globalToLocal(globalPosition);
 
@@ -322,7 +319,6 @@ class _CameraState extends State<Camera> {
   }
 
   Future<void> loadImageBundleBytes() async {
-    print("(LOADIMAGE)Path do arquivo dentro de LOAD: ${_fotoGramado.path}");
     final imageBytes = await _fotoGramado.readAsBytes();
     setImageBytes(imageBytes);
   }
@@ -362,6 +358,7 @@ class _CameraState extends State<Camera> {
           _fotoGramado = null;
           fotoAux = null;
           corBox = Colors.white;
+          _stateController.add(corBox);
         });
       },
     );
