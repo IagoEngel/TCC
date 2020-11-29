@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tcc_app_grama/telas/menu.dart';
+import 'package:tcc_app_grama/telas/mostrar_cor.dart';
+import 'package:tcc_app_grama/telas/add_cor.dart';
 //import 'login.dart';
 void main() {
   runApp(MyApp());
