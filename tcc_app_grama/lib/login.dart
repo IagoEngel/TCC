@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tcc_app_grama/services/auth.dart';
-import 'package:tcc_app_grama/signup.dart';
 import 'package:tcc_app_grama/telas/tela_inicial.dart';
-import 'package:tcc_app_grama/repository/datauser.dart';
-import 'package:tcc_app_grama/models/user.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Login extends StatefulWidget {
   int qtdTentativas = 1;
@@ -14,9 +9,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  User user = new User();
-  final AuthService _auth = AuthService();
-  UserRepository repository = UserRepository();
   TextEditingController txtEmail = TextEditingController();
   TextEditingController txtSenha = TextEditingController();
 
@@ -83,7 +75,7 @@ class _LoginState extends State<Login> {
                         textAlign: TextAlign.center,
                       ),
                       onPressed: () async {
-                        dynamic result = await _auth.signInEmailPasswd(
+                        /* dynamic result = await _auth.signInEmailPasswd(
                             txtEmail.text, txtSenha.text);
                         if (result == null) {
                           print('error signing in');
@@ -94,11 +86,11 @@ class _LoginState extends State<Login> {
                             .then((QuerySnapshot docs) {
                           user.email = docs.documents[0].data['email'];
                           user.nome = docs.documents[0].data['nome'];
-                        });
+                        }); */
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => TelaInicial(user: user)));
+                                builder: (context) => TelaInicial()));
                       },
                     ),
                   ),
@@ -113,23 +105,16 @@ class _LoginState extends State<Login> {
                         style: TextStyle(fontSize: 18),
                       ),
                       onPressed: () {
-                        Navigator.push(
+                        /* Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => SignupPage()),
-                        );
+                        ); */
                       }),
                 ),
               ],
             ),
           ),
         ));
-  }
-
-  _getUser(String email) {
-    return Firestore.instance
-        .collection('usuario')
-        .where('email', isEqualTo: email)
-        .getDocuments();
   }
 
   Widget _textFieldEmail() {

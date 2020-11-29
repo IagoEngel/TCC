@@ -59,6 +59,7 @@ class _TelaCorState extends State<TelaCor> {
                       "rbg da imagem 3 = ${cor3.red}, ${cor3.green}, ${cor3.blue}"),
                   Text("\nCOR MÉDIA\n"),
                   Container(height: 100, width: 100, color: corMedia),
+                  Text("${snapshot.data[0].dominantColor.population}"),
                 ],
               );
             }
