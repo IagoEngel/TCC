@@ -7,6 +7,8 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tcc_app_grama/model/munsell_model.dart';
+import 'package:tcc_app_grama/repository/munsell_repositores.dart';
 import 'package:tcc_app_grama/telas/instrucoes.dart';
 import 'package:tcc_app_grama/telas/menu.dart';
 import 'package:tcc_app_grama/widgets/drawerheader.dart';
@@ -24,6 +26,8 @@ class _CameraState extends State<Camera> {
   Color corBox = Colors.white;
   Color corSelecionada;
   img.Image fotoAux;
+  Future<List<MunsellModel>> munsellFuture;
+  MunsellRepository _repository;
 
   Future getImage() async {
     File imagem;
@@ -48,6 +52,8 @@ class _CameraState extends State<Camera> {
   @override
   void initState() {
     currentKey = imageKey;
+    _repository = MunsellRepository();
+    munsellFuture = _repository.findAll();
     super.initState();
   }
 
@@ -270,18 +276,65 @@ class _CameraState extends State<Camera> {
         child: RepaintBoundary(
           child: GestureDetector(
             onPanDown: (details) {
-              setState(() {
-                currentKey = imageKey;
-                corBox = corSelecionada;
-              });
               procurarCor(details.globalPosition);
+              String hexa = corBox.toString();
+              //print(hexa.substring(10, 16));
             },
             onPanUpdate: (details) {
-              setState(() {
-                currentKey = imageKey;
-                corBox = corSelecionada;
-              });
               procurarCor(details.globalPosition);
+              String hexa = corBox.toString();
+              //print(hexa.substring(10, 16));
+            },
+            onPanEnd: (details) {
+              return showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return FutureBuilder(
+                    future: munsellFuture,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<List<MunsellModel>> snapshot) {
+                      print("SNAPSHOT: ${snapshot.hasData}");
+                      if (!snapshot.hasData) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Column(
+                            children: <Widget>[
+                              Icon(
+                                Icons.error_outline,
+                                color: Colors.red,
+                                size: 60,
+                              ),
+                              Text('Error: ${snapshot.error}'),
+                            ],
+                          ),
+                        );
+                      } else {
+                        return ListView.builder(
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (context, index) {
+                            var item = snapshot.data[index];
+
+                            return Container(
+                              width: 200,
+                              height: 200,
+
+                              child: Row(
+                                children: [
+                                  Text(item.nomecor),
+                                  Text(item.descricao),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      }
+                    },
+                  );
+                },
+              );
             },
             child: Image.file(
               _fotoGramado,
@@ -316,6 +369,11 @@ class _CameraState extends State<Camera> {
     int hex = abgrToArgb(pixel32);
 
     _stateController.add(Color(hex));
+
+    setState(() {
+      currentKey = imageKey;
+      corBox = Color(hex);
+    });
   }
 
   Future<void> loadImageBundleBytes() async {
@@ -384,7 +442,10 @@ class _CameraState extends State<Camera> {
       ),
       onPressed: () async {
         if (_fotoGramado != null) {
-          await GallerySaver.saveImage(_fotoGramado.path);
+          //await GallerySaver.saveImage(_fotoGramado.path);
+          String hexa = corBox.toString();
+          print(hexa.substring(10, 16));
+          var teste = _repository.buscaMunsell(hexa);
           return showDialog(
             context: context,
             builder: (BuildContext context) {
