@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'APP TCC',
       debugShowCheckedModeBanner: false,
-      home: Menu(),
+      home: MostrarCor(),
       theme: ThemeData(primarySwatch: Colors.green),
     );
   }
