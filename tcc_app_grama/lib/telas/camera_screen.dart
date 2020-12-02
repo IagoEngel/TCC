@@ -185,6 +185,35 @@ class _CameraState extends State<Camera> {
   }
 
   Widget _rowCor() {
+    // TODO: Verificar se o Selecionador de cor funciona com o banco
+    Widget _atributosCor() {
+      return FutureBuilder(
+        future: this.munsellFuture,
+        builder:
+            (BuildContext context, AsyncSnapshot<List<MunsellModel>> snapshot) {
+          if (!snapshot.hasData) {
+            return Text(
+              "Cor não encontrada",
+              style: TextStyle(color: Colors.red),
+            );
+          } else if(snapshot.hasError){
+            return Text(
+              "ERRO = ${snapshot.error}",
+              style: TextStyle(color: Colors.red),
+            );
+          } else{
+            return Column(
+              children: [
+                Text("${snapshot.data.first.nomecor}"),
+                Text("${snapshot.data.first.descricao}"),
+                Text("${snapshot.data.first.hexa}"),
+              ],
+            );
+          }
+        },
+      );
+    }
+
     Widget _textosCor() {
       return Column(
         children: [
@@ -206,7 +235,12 @@ class _CameraState extends State<Camera> {
           child: null,
         ),
         SizedBox(width: 50),
-        _textosCor(),
+        Column(
+          children: [
+            _textosCor(),
+            _atributosCor(),
+          ],
+        ),
       ],
     );
   }
@@ -277,64 +311,13 @@ class _CameraState extends State<Camera> {
           child: GestureDetector(
             onPanDown: (details) {
               procurarCor(details.globalPosition);
-              String hexa = corBox.toString();
-              //print(hexa.substring(10, 16));
             },
             onPanUpdate: (details) {
               procurarCor(details.globalPosition);
-              String hexa = corBox.toString();
-              //print(hexa.substring(10, 16));
             },
             onPanEnd: (details) {
-              return showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return FutureBuilder(
-                    future: munsellFuture,
-                    builder: (BuildContext context,
-                        AsyncSnapshot<List<MunsellModel>> snapshot) {
-                      print("SNAPSHOT: ${snapshot.hasData}");
-                      if (!snapshot.hasData) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Center(
-                          child: Column(
-                            children: <Widget>[
-                              Icon(
-                                Icons.error_outline,
-                                color: Colors.red,
-                                size: 60,
-                              ),
-                              Text('Error: ${snapshot.error}'),
-                            ],
-                          ),
-                        );
-                      } else {
-                        return ListView.builder(
-                          itemCount: snapshot.data.length,
-                          itemBuilder: (context, index) {
-                            var item = snapshot.data[index];
-
-                            return Container(
-                              width: 200,
-                              height: 200,
-
-                              child: Row(
-                                children: [
-                                  Text(item.nomecor),
-                                  Text(item.descricao),
-                                ],
-                              ),
-                            );
-                          },
-                        );
-                      }
-                    },
-                  );
-                },
-              );
+              String hexa = corBox.toString().substring(10, 16);
+              munsellFuture = _repository.buscaMunsell(hexa);
             },
             child: Image.file(
               _fotoGramado,
@@ -416,6 +399,7 @@ class _CameraState extends State<Camera> {
           _fotoGramado = null;
           fotoAux = null;
           corBox = Colors.white;
+          munsellFuture = _repository.findAll();
           _stateController.add(corBox);
         });
       },
