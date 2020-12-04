@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'package:flutter/scheduler.dart';
 import 'package:image/image.dart' as img;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/material.dart';
@@ -11,9 +12,26 @@ import 'package:tcc_app_grama/model/munsell_model.dart';
 import 'package:tcc_app_grama/repository/munsell_repositores.dart';
 import 'package:tcc_app_grama/telas/instrucoes.dart';
 import 'package:tcc_app_grama/telas/menu.dart';
+import 'package:tcc_app_grama/widgets/corpoDrawer.dart';
 import 'package:tcc_app_grama/widgets/drawerheader.dart';
 
 class Camera extends StatefulWidget {
+  String auxSintomas = "NENHUM";
+
+  Map<String, String> sintomas = {
+    "NITROGÊNIO":"Inicialmente, folhas mais velhas apresentam uma coloração verde-clara, que progride para uma clorose total, a qual se inicia a partir da ponta do limbo, expandindo-se em direção à bainha pelo meio da folha e, posteriormente, para as laterais. Em casos severos, as folhas tornam-se totalmente amarelas e ressequidas a partir da ponta. As plantas têm crescimento reduzido e apresentam colmos mais finos.",
+    "FÓSFORO":"Manchas irregulares, começando de modo disperso pelas bordas, na porção mediana de folhas, a princípio nas mais velhas. As manchas coalescem, estendendo-se ao longo do limbo, em três direções, para a bainha, nervura central e ponta da folha. As manchas têm coloração marrom, opaca, bem suave, com aparência enrugada e fina, muitas vezes demarcadas por uma coloração vermelha-escura, além de estrias e pontuações marrom-escura, além de estrias e pontuações marrom-avermelhadas suaves. Apresenta necrose retilínea ao longo da borda foliar, a partir das folhas mais velhas. ",
+    "POTÁSSIO":"Inicialmente, nas folhas mais velhas, há ocorrência de manchas escuras avermelhadas e necrose de formato retilíneo ao longo das nervuras secundárias e das bordas, começando das extremidades para a nervura principal, além de secamento da ponta da folha. Ocorre, também, enrolamento parcial da borda para o centro no terço superior da folha e paralisação do crescimento dos internódios, dando à planta a aparência de um leque, com a bainhas das folhas sobrepostas.   ",
+    "CÁLCIO":"Iniciando pelas mais novas, ocorre deformação lateral da folha, em um ou em ambos os lados, apresentando laceração com estrias esbranquiçadas, enrolamento e necrose do ápice do limbo. Com a progressão dos sintomas, as folhas apresentam necrose marrom-clara nas bordas.",
+    "MAGNÉSIO":"O sintoma, em folhas mais velhas, caracteriza-se por manchas avermelhadas e/ou alaranjadas, bem como clorose amarelo-alaranjada,  tanto apical como lateral, expandindo-se  para o centro da folha, formando manchas necróticas irregulares marrom-avermelhadas. O ângulo entre folha e colmo é maior e o crescimento da planta é reduzido. ",
+    "ENXOFRE":"Apresenta plantas com clorose em todo o limbo foliar, inicialmente nas mais novas, com maior evidência entre as nervuras, além de colmos mais claros. ",
+    "BORO":"Os sintomas iniciam-se em folhas mais jovens, com estrias brancas (perda de pigmentação) e finas, paralelas à nervura central, que se alongam e alargam no decorrer do tempo. A descoloração que  ocorre entre as nervuras ficam translúcidas em alguns pontos. Posteriormente, manchas avermelhadas aparecem ao longo das nervuras, de modo desuniforme, começando pelas folhas mais velhas. Os colmos também apresentam sintomas semelhantes. Ocorre superbrotação de folhas e perfilhamento precoce, também com sintomas. Há paralização do crescimento apical e do alongamento dos internódios, dando à planta uma aparência de leque, semelhante ao que ocorre na deficiência de potássio.",
+    "COBRE":"Apresenta folhas intermediárias e mais novas com clorose internerval irregular, com aparecimento posterior de nervuras, central e secundárias, avermelhadas (estrias), tanto nas folhas como no colmo e também, pequenas manchas vermelhas. Ocorre descoloração internerval a partir das bordas foliares, que tende a ficar transparente a partir das bordas foliares, que tende a ficar transparente em folhas mais novas. Essa despigmentação é linear e irregular, iniciando-se pelas bordas ou pelo meio do limbo foliar. Posteriormente, essas manchas tornam-se amarronzadas ou necróticas, com bordas mais escuras e bem delimitadas. O limbo das folhas tende a se curvar para baixo, ou seja, em direção à face dorsal. Há um ângulo maior de inserção na folha com o colmo, como ocorre com a deficiência de magnésio.",
+    "FERRO":"O sintoma de deficiência inicia-se com clorose internerval em folhas mais novas, incialmente mantendo-se verde as nervuras, num padrão de reticulado fino. Com o agravamento dos sintomas, as folhas tornam-se uniformemente amarelas, tendendo ao branqueamento em casos muito severos. ",
+    "MANGANÊS":"O sintoma de carência em manganês é típico em sorgo-sacarino, iniciando-se nas folhas novas por meio de clorose entre as nervuras, formando um reticulado verde grosso, ou seja, a região que permanece verde ao redor das nervuras é mais larga do que em relação ao sintoma inicial de deficiência de ferro.",
+    "ZINCO":"Inicialmente, ocorre clorose que coalesce a partir das bordas das folhas mais novas, com o aparecimento da faixa clorótica em um ou em ambos os lados da folha. Ocorre também o avermelhamento das nervuras central e laterais das folhas e estrias vermelhas no colmo. Em folhas mais velhas, baixeiro e medianas, pode ocorrer necrose avermelhada ao longo das laterais do limbo. Também aparecem manchas avermelhadas entremeadas com manchas marrons. As pontas foliares tornam-se necrosadas. Com a agravamento do sintoma, todo o limbo foliar fica necrosado, porém com manchas mais claras nas tonalidades marrom, vermelha e amarela, iniciando-se na ponta da folha e expandindo-se para as laterais.",
+  };
+
   @override
   _CameraState createState() => _CameraState();
 }
@@ -72,7 +90,7 @@ class _CameraState extends State<Camera> {
           child: ListView(
             children: [
               drawerHeader(),
-              _corpoDrawer(),
+              corpoDrawer(context,"Análise do gramado"),
             ],
           ),
         ),
@@ -93,6 +111,7 @@ class _CameraState extends State<Camera> {
                     SizedBox(height: 10),
                     _rowCor(),
                     SizedBox(height: 30),
+                    Text(widget.sintomas[widget.auxSintomas]),
                   ],
                 ),
               ),
@@ -123,51 +142,6 @@ class _CameraState extends State<Camera> {
     );
   }
 
-  Widget _corpoDrawer() {
-    Widget _divider() {
-      return Divider(
-        color: Colors.black54,
-        height: 10,
-      );
-    }
-
-    Widget _flatButton(String titulo, Widget pagina) {
-      return FlatButton(
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Text("$titulo", style: TextStyle(fontSize: 20)),
-        ),
-        minWidth: MediaQuery.of(context).size.width,
-        onPressed: () {
-          if (pagina == null || titulo == "Análise do gramado") {
-            return null;
-          } else {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => pagina),
-            );
-          }
-        },
-      );
-    }
-
-    return Padding(
-      padding: const EdgeInsets.only(left: 15, top: 15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _flatButton("Início", Menu()),
-          _divider(),
-          _flatButton("Instruções", Instrucoes()),
-          _divider(),
-          _flatButton("Análise do gramado", null),
-          _divider(),
-          _flatButton("Histórico de análise", null),
-        ],
-      ),
-    );
-  }
-
   Widget _rowImagem() {
     return StreamBuilder(
       initialData: Colors.white,
@@ -185,7 +159,6 @@ class _CameraState extends State<Camera> {
   }
 
   Widget _rowCor() {
-    // TODO: Verificar se o Selecionador de cor funciona com o banco
     Widget _atributosCor() {
       return FutureBuilder(
         future: this.munsellFuture,
@@ -202,13 +175,17 @@ class _CameraState extends State<Camera> {
               style: TextStyle(color: Colors.red),
             );
           } else{
-            var item = snapshot.data.first;
+            SchedulerBinding.instance.addPostFrameCallback((timeStamp) { 
+              setState(() {
+                widget.auxSintomas = snapshot.data.first.nutriente.toUpperCase();
+              });
+            });
             return Column(
               children: [
-                Text("${item.nutriente}"),
-                Text("${item.notacao}"),
-                (item.nomecor.isEmpty)? Container() : Text("${item.nomecor}"),
-                Text("${item.hexa}"),
+                Text("${snapshot.data.first.nutriente}"),
+                Text("${snapshot.data.first.notacao}"),
+                Text("${snapshot.data.first.hexa}"),
+                Text("${snapshot.data.first.nomecor}"),
               ],
             );
           }
