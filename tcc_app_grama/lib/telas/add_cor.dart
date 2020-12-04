@@ -13,15 +13,10 @@ class _AddCorState extends State<AddCor> {
   Future<MunsellModel> munsellFuture;
   MunsellRepository _repository;
 
-
-   final TextEditingController _controladorHexa = TextEditingController();
-  final TextEditingController _controladorDescricao = TextEditingController();
-  final TextEditingController _controladorMineral = TextEditingController();
-  final TextEditingController _controladorFormula = TextEditingController();
-  final TextEditingController  _controladorMunsell = TextEditingController();
-  final TextEditingController _controladorNomeCor = TextEditingController();
-
-
+  TextEditingController _controllerNutriente = new TextEditingController();
+  TextEditingController _controllerNotacao = new TextEditingController();
+  TextEditingController _controllerHexa = new TextEditingController();
+  TextEditingController _controllerNomeCor = new TextEditingController();
 
   @override
   void initState() {
@@ -36,53 +31,37 @@ class _AddCorState extends State<AddCor> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Cadastrando produto'),
+          title: Text('Cadastrando cor'),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: <Widget>[
               TextField(
-                controller: _controladorHexa,
+                controller: _controllerHexa,
                 decoration: InputDecoration(labelText: 'Hexa'),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
                 child: TextField(
-                  controller: _controladorDescricao,
-                  decoration: InputDecoration(labelText: 'Descricao'),
+                  controller: _controllerNotacao,
+                  decoration: InputDecoration(labelText: 'Notação da tabela Munsell'),
              
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
                 child: TextField(
-                  controller: _controladorMineral,
-                  decoration: InputDecoration(labelText: 'Mineral'),
+                  controller: _controllerNutriente,
+                  decoration: InputDecoration(labelText: 'Nutriente'),
               
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
                 child: TextField(
-                  controller: _controladorFormula,
-                  decoration: InputDecoration(labelText: 'Formula'),
-              
-                ),
-              ),
-               Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: TextField(
-                  controller: _controladorMunsell,
-                  decoration: InputDecoration(labelText: 'Munsell'),
-              
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: TextField(
-                  controller: _controladorNomeCor,
-                  decoration: InputDecoration(labelText: 'Nome cor'),
+                  controller: _controllerNomeCor,
+                  decoration: InputDecoration(labelText: 'Nome da Cor'),
               
                 ),
               ),
@@ -91,14 +70,12 @@ class _AddCorState extends State<AddCor> {
                 child: RaisedButton(
                   child: Text('Cadastrar'),
                   onPressed: () {
-                    final String hexa = _controladorHexa.text;
-                    final String descricao = _controladorDescricao.text;
-                    final String mineral = _controladorMineral.text;
-                    final String formula = _controladorFormula.text;
-                     final String munsell = _controladorMunsell.text;
-                    final String nomecor = _controladorNomeCor.text;
+                    final String hexa = _controllerHexa.text;
+                    final String notacao = _controllerNotacao.text;
+                    final String nutriente = _controllerNutriente.text;
+                    final String nomeCor = _controllerNomeCor.text;
      
-                     _repository.cadastraMunsell(hexa, descricao, mineral, formula, munsell, nomecor);
+                     _repository.cadastraMunsell(nutriente,notacao,hexa,nomeCor);
                 
                     
                   },

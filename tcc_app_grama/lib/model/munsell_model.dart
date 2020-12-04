@@ -1,15 +1,13 @@
 class MunsellModel {
+  String nutriente;
+  String notacao;
   String hexa;
-  String descricao;
-  String mineral;
-  String formula;
   String nomecor;
 
   MunsellModel({
+    this.nutriente,
+    this.notacao,
     this.hexa,
-    this.descricao,
-    this.mineral,
-    this.formula,
     this.nomecor,
   });
 
@@ -18,11 +16,10 @@ class MunsellModel {
     if (map == null) return null;
 
     return MunsellModel(
+      nutriente: map['nutriente'],
+      notacao: map['notacao'],
       hexa: map['hexa'],
-      descricao: map['descricao'],
-      mineral: map['mineral'],
-      formula: map['formula'],
-      nomecor: map['nomecor']
+      nomecor: map['nomecor'],
     );
 
   }

@@ -202,11 +202,13 @@ class _CameraState extends State<Camera> {
               style: TextStyle(color: Colors.red),
             );
           } else{
+            var item = snapshot.data.first;
             return Column(
               children: [
-                Text("${snapshot.data.first.nomecor}"),
-                Text("${snapshot.data.first.descricao}"),
-                Text("${snapshot.data.first.hexa}"),
+                Text("${item.nutriente}"),
+                Text("${item.notacao}"),
+                (item.nomecor.isEmpty)? Container() : Text("${item.nomecor}"),
+                Text("${item.hexa}"),
               ],
             );
           }

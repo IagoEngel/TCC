@@ -89,8 +89,8 @@ class _MostrarCorState extends State<MostrarCor> {
                       var item = snapshot.data[index];
                       
                       return ListTile(
-                        title: Text(item.nomecor),
-                        subtitle: Text(item.descricao),
+                        title: Text(item.notacao),
+                        subtitle: Text(item.hexa),
                       );
                     },
                   );

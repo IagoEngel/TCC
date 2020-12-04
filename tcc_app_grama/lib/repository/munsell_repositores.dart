@@ -20,16 +20,14 @@ class MunsellRepository {
     });
   }
 
- Future<String> cadastraMunsell( String hexa,String descricao,String mineral,String formula, String munsell,String nomecor) async {
+ Future<String> cadastraMunsell( String nutriente, String notacao, String hexa, String nomecor) async {
     Dio dio = new Dio();
+    print(nutriente);
+    print(notacao);
     print(hexa);
-       print(descricao);
-          print(mineral);
-             print(formula);
-               print(munsell);
-                print(nomecor);
+    print(nomecor);
 
-   Response response = await dio.post('http://192.168.0.194:3333/tabela/',data:{"hexa":hexa,"descricao":descricao, "mineral":mineral,"formula":formula,"munsell":munsell,"nomecor":nomecor});
+   Response response = await dio.post('http://192.168.0.194:3333/tabela/',data:{"nutriente":nutriente,"notacao":notacao, "hexa":hexa, "nomecor": nomecor});
     print(response);
   }
 
