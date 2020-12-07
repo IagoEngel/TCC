@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tcc_app_grama/model/historico.dart';
 import 'package:tcc_app_grama/model/munsell_model.dart';
 import 'package:tcc_app_grama/repository/munsell_repositores.dart';
 import 'package:tcc_app_grama/widgets/corpoDrawer.dart';
@@ -15,36 +14,32 @@ import 'package:tcc_app_grama/widgets/drawerheader.dart';
 
 class Camera extends StatefulWidget {
   String auxSintomas = "NENHUM";
-  var historico = new List<Historico>();
 
   Map<String, String> sintomas = {
     "NITROGÊNIO":
-        "Inicialmente, folhas mais velhas apresentam uma coloração verde-clara, que progride para uma clorose total, a qual se inicia a partir da ponta do limbo, expandindo-se em direção à bainha pelo meio da folha e, posteriormente, para as laterais. Em casos severos, as folhas tornam-se totalmente amarelas e ressequidas a partir da ponta. As plantas têm crescimento reduzido e apresentam colmos mais finos.",
+        "A falta de nitrogênio nas plantas, inicialmente apresentam os sintomas em folhas mais velhas, reduz o crescimento e os colmos ficam mais finos. As folhas apresentam uma coloração verde-clara, expandindo por toda a folha pelo meio e, posteriormente, pelas laterais. As folhas podem apresentar coloração totalmente amareladas em casos severos.\n\nFonte: Guia de Diagnose Visual de Deficiências Nutricionais em Sorgo-Sacarino",
     "FÓSFORO":
-        "Manchas irregulares, começando de modo disperso pelas bordas, na porção mediana de folhas, a princípio nas mais velhas. As manchas coalescem, estendendo-se ao longo do limbo, em três direções, para a bainha, nervura central e ponta da folha. As manchas têm coloração marrom, opaca, bem suave, com aparência enrugada e fina, muitas vezes demarcadas por uma coloração vermelha-escura, além de estrias e pontuações marrom-escura, além de estrias e pontuações marrom-avermelhadas suaves. Apresenta necrose retilínea ao longo da borda foliar, a partir das folhas mais velhas. ",
+        "Com a falta de fósforo nas folhas surge manchas a princípio nas mais velhas. Essas manchas são irregulares tendo início pelas bordas e vão se espalhando indo em direção a bainha, nervura central e ponta das folhas. Essas manchas apresentam coloração marrom com aparência enrugada e fina, coloração marrom-escura com estrias e pontuações marrom-avermelhadas.\n\nFonte: Guia de Diagnose Visual de Deficiências Nutricionais em Sorgo-Sacarino",
     "POTÁSSIO":
-        "Inicialmente, nas folhas mais velhas, há ocorrência de manchas escuras avermelhadas e necrose de formato retilíneo ao longo das nervuras secundárias e das bordas, começando das extremidades para a nervura principal, além de secamento da ponta da folha. Ocorre, também, enrolamento parcial da borda para o centro no terço superior da folha e paralisação do crescimento dos internódios, dando à planta a aparência de um leque, com a bainhas das folhas sobrepostas.   ",
+        " Tendo início nas folhas mais velhas, com a falta de potássio surgem manchas escuras avermelhadas, além das manchas, as folhas apresentam necrose de formato retilíneo ao longo das nervuras secundárias e das bordas, apresentam também secamento da ponta. Além disso, a borda das folhas se enrola e paralisa o crescimento, dando à planta a aparência de um leque.\n\nFonte: Guia de Diagnose Visual de Deficiências Nutricionais em Sorgo-Sacarino",
     "CÁLCIO":
-        "Iniciando pelas mais novas, ocorre deformação lateral da folha, em um ou em ambos os lados, apresentando laceração com estrias esbranquiçadas, enrolamento e necrose do ápice do limbo. Com a progressão dos sintomas, as folhas apresentam necrose marrom-clara nas bordas.",
+        "A deficiência pela falta do cálcio se inicia nas folhas mais novas, apresentando uma coloração marrom-clara nas bordas. Apresentam também deformação lateral, laceração com estrias esbranquiçadas, enrolamento e necrose do ápice do limbo.\n\nFonte: Guia de Diagnose Visual de Deficiências Nutricionais em Sorgo-Sacarino",
     "MAGNÉSIO":
-        "O sintoma, em folhas mais velhas, caracteriza-se por manchas avermelhadas e/ou alaranjadas, bem como clorose amarelo-alaranjada,  tanto apical como lateral, expandindo-se  para o centro da folha, formando manchas necróticas irregulares marrom-avermelhadas. O ângulo entre folha e colmo é maior e o crescimento da planta é reduzido. ",
+        "Os sintomas pela falta do magnésio são apresentados em folhas mais velhas, com manchas de coloração avermelhadas e/ou alaranjadas, clorose amarelo-alaranjada e manchas necróticas irregulares marrom-avermelhadas. Além de que o crescimento da planta é reduzido.\n\nFonte: Guia de Diagnose Visual de Deficiências Nutricionais em Sorgo-Sacarino",
     "ENXOFRE":
-        "Apresenta plantas com clorose em todo o limbo foliar, inicialmente nas mais novas, com maior evidência entre as nervuras, além de colmos mais claros. ",
+        "Os sintomas da falta de enxofre nas folhas, são apresentadas inicialmente nas folhas mais novas. Apresentam uma coloração amarelada por toda a folha, com maior evidência entre as nervuras.\n\nFonte: Guia de Diagnose Visual de Deficiências Nutricionais em Sorgo-Sacarino",
     "BORO":
-        "Os sintomas iniciam-se em folhas mais jovens, com estrias brancas (perda de pigmentação) e finas, paralelas à nervura central, que se alongam e alargam no decorrer do tempo. A descoloração que  ocorre entre as nervuras ficam translúcidas em alguns pontos. Posteriormente, manchas avermelhadas aparecem ao longo das nervuras, de modo desuniforme, começando pelas folhas mais velhas. Os colmos também apresentam sintomas semelhantes. Ocorre superbrotação de folhas e perfilhamento precoce, também com sintomas. Há paralização do crescimento apical e do alongamento dos internódios, dando à planta uma aparência de leque, semelhante ao que ocorre na deficiência de potássio.",
+        "A deficiência de boro é inicialmente apresentada em folhas mais jovens. Apresentam descoloração das folhas e manchas marrom-avermelhada. Além das manchas, surgem estrias brancas e finas, paralelas à nervura central, que se alonga e alarga com o decorrer do tempo. Há também a paralisação do crescimento, dando uma aparência de leque.\n\nFonte: Guia de Diagnose Visual de Deficiências Nutricionais em Sorgo-Sacarino",
     "COBRE":
-        "Apresenta folhas intermediárias e mais novas com clorose internerval irregular, com aparecimento posterior de nervuras, central e secundárias, avermelhadas (estrias), tanto nas folhas como no colmo e também, pequenas manchas vermelhas. Ocorre descoloração internerval a partir das bordas foliares, que tende a ficar transparente a partir das bordas foliares, que tende a ficar transparente em folhas mais novas. Essa despigmentação é linear e irregular, iniciando-se pelas bordas ou pelo meio do limbo foliar. Posteriormente, essas manchas tornam-se amarronzadas ou necróticas, com bordas mais escuras e bem delimitadas. O limbo das folhas tende a se curvar para baixo, ou seja, em direção à face dorsal. Há um ângulo maior de inserção na folha com o colmo, como ocorre com a deficiência de magnésio.",
+        "O sintoma nas folhas pela falta do nutriente cobre, são apresentadas nas folhas intermediárias e nas mais novas. As folhas apresentam estrias com coloração vermelha, descoloração que tende a ficar transparente. Apresentam também manchas amarronzadas com bordas mais escuras.\n\nFonte: Guia de Diagnose Visual de Deficiências Nutricionais em Sorgo-Sacarino",
     "FERRO":
-        "O sintoma de deficiência inicia-se com clorose internerval em folhas mais novas, incialmente mantendo-se verde as nervuras, num padrão de reticulado fino. Com o agravamento dos sintomas, as folhas tornam-se uniformemente amarelas, tendendo ao branqueamento em casos muito severos. ",
+        "As folhas que indicam a falta de ferro, apresentam coloração amarelada e as nervuras verdes, iniciando em folhas mais novas. Com a piora do sintoma as folhas tornam-se inteiramente amareladas. E em casos mais graves, ocorre o branqueamento total das folhas.\n\nFonte: Guia de Diagnose Visual de Deficiências Nutricionais em Sorgo-Sacarino",
     "MANGANÊS":
-        "O sintoma de carência em manganês é típico em sorgo-sacarino, iniciando-se nas folhas novas por meio de clorose entre as nervuras, formando um reticulado verde grosso, ou seja, a região que permanece verde ao redor das nervuras é mais larga do que em relação ao sintoma inicial de deficiência de ferro.",
+        "As folhas que indicam falta de manganês, também apresentam uma coloração amarelada com as nervuras verdes. Também é iniciado em folhas mais novas.\n\nFonte: Guia de Diagnose Visual de Deficiências Nutricionais em Sorgo-Sacarino",
     "ZINCO":
-        "Inicialmente, ocorre clorose que coalesce a partir das bordas das folhas mais novas, com o aparecimento da faixa clorótica em um ou em ambos os lados da folha. Ocorre também o avermelhamento das nervuras central e laterais das folhas e estrias vermelhas no colmo. Em folhas mais velhas, baixeiro e medianas, pode ocorrer necrose avermelhada ao longo das laterais do limbo. Também aparecem manchas avermelhadas entremeadas com manchas marrons. As pontas foliares tornam-se necrosadas. Com a agravamento do sintoma, todo o limbo foliar fica necrosado, porém com manchas mais claras nas tonalidades marrom, vermelha e amarela, iniciando-se na ponta da folha e expandindo-se para as laterais.",
+        "As folhas com falta de zinco, apresentam coloração amarelada, posteriormente esbranquiçada e manchas vermelhas. A evolução se dá com o início nas bordas de folhas mais novas, onde surge faixas com a coloração amarelada e as manchas em tons avermelhados e as pontas ficam necrosadas. Em folhas mais velhas, as laterais ficam avermelhadas. Há também casos onde ocorre os três tipos de coloração, porém apenas em casos mais graves.\n\nFonte: Guia de Diagnose Visual de Deficiências Nutricionais em Sorgo-Sacarino",
+    "": "",
   };
-
-  Camera() {
-    historico = [];
-  }
 
   @override
   _CameraState createState() => _CameraState();
@@ -57,7 +52,6 @@ class _CameraState extends State<Camera> {
   GlobalKey currentKey;
   Color corBox = Colors.white;
   Color corSelecionada;
-  Offset offsetAuxiliar;
   img.Image fotoAux;
   Future<List<MunsellModel>> munsellFuture;
   MunsellRepository _repository;
@@ -87,29 +81,6 @@ class _CameraState extends State<Camera> {
       fotoDaGaleria = true;
       _fotoGramado = imagem;
     });
-  }
-
-  Future load() async {
-    var prefs = await SharedPreferences.getInstance();
-    var data = prefs.getString('data');
-
-    if (data != null) {
-      Iterable decoded = jsonDecode(data);
-      List<Historico> resultado =
-          decoded.map((e) => Historico.fromJson(e)).toList();
-      setState(() {
-        widget.historico = resultado;
-      });
-    }
-  }
-
-  save() async {
-    var prefs = await SharedPreferences.getInstance();
-    await prefs.setString('data', jsonEncode(widget.historico));
-  }
-
-  _CameraState() {
-    load();
   }
 
   @override
@@ -155,7 +126,9 @@ class _CameraState extends State<Camera> {
                     _rowImagem(),
                     SizedBox(height: 10),
                     _rowCor(),
-                    _botaoSintoma(widget.sintomas[widget.auxSintomas]),
+                    (iniciouTela)
+                        ? Container()
+                        : _botaoSintoma(widget.sintomas[widget.auxSintomas]),
                     SizedBox(height: 30),
                   ],
                 ),
@@ -175,8 +148,6 @@ class _CameraState extends State<Camera> {
                 child: Column(
                   children: [
                     _rowExcluir(),
-                    SizedBox(height: 8),
-                    _rowAnalisar(),
                   ],
                 ),
               ),
@@ -222,7 +193,7 @@ class _CameraState extends State<Camera> {
                 );
               },
             );
-          }else
+          } else
             return null;
         },
       ),
@@ -254,7 +225,9 @@ class _CameraState extends State<Camera> {
           if (!snapshot.hasData) {
             naoAchouCor = true;
             SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-              habilitarBotao = false;
+              setState(() {
+                habilitarBotao = false;
+              });
             });
             return Column(
               children: [
@@ -268,6 +241,12 @@ class _CameraState extends State<Camera> {
               ],
             );
           } else if (snapshot.hasError) {
+            naoAchouCor = true;
+            SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+              setState(() {
+                habilitarBotao = false;
+              });
+            });
             return Text(
               "ERRO = ${snapshot.error}",
               style: TextStyle(color: Colors.red),
@@ -278,22 +257,20 @@ class _CameraState extends State<Camera> {
               setState(() {
                 widget.auxSintomas =
                     snapshot.data.first.nutriente.toUpperCase();
-                habilitarBotao = true;
-                if (!iniciouTela)
-                  widget.historico.add(Historico(analise: snapshot.data.first));
+                if (!iniciouTela) habilitarBotao = true;
               });
             });
             return Column(
               children: [
                 (iniciouTela)
-                    ? Text("Hexa: #ffffff")
-                    : Text("Hexa: ${snapshot.data.first.hexa}"),
+                    ? Text("Cor em hexadecimal: #ffffff")
+                    : Text("Cor em hexadecimal: ${snapshot.data.first.hexa}"),
                 (iniciouTela)
-                    ? Text("Nutriente:")
-                    : Text("Nutriente: ${snapshot.data.first.nutriente}"),
+                    ? Text("Deficiência de nutriente:")
+                    : Text("Deficiência de nutriente: ${snapshot.data.first.nutriente}"),
                 (iniciouTela)
-                    ? Text("Notação:")
-                    : Text("Notação: ${snapshot.data.first.notacao}"),
+                    ? Text("Munsell - Notação da cor:")
+                    : Text("Munsell - Notação da cor: ${snapshot.data.first.notacao}"),
                 (iniciouTela)
                     ? Text("Nome da cor: branco")
                     : Text("Nome da cor: ${snapshot.data.first.nomecor}"),
@@ -360,8 +337,8 @@ class _CameraState extends State<Camera> {
           border: Border.all(color: Colors.transparent, width: 5),
         ),
         child: Container(
-          height: 420,
-          width: 315,
+          height: 400,
+          width: 300,
           decoration: BoxDecoration(
             border: Border.all(color: Colors.black, width: 5),
           ),
@@ -380,8 +357,8 @@ class _CameraState extends State<Camera> {
       decoration: BoxDecoration(
         border: Border.all(color: Color.fromRGBO(250, 37, 62, 1.0), width: 5),
       ),
-      height: 420,
-      width: 315,
+      height: 400,
+      width: 300,
       child: Align(
         alignment: Alignment.center,
         child: RepaintBoundary(
@@ -389,16 +366,15 @@ class _CameraState extends State<Camera> {
             onPanDown: (details) {
               iniciouTela = false;
               procurarCor(details.globalPosition);
-              offsetAuxiliar = details.globalPosition;
               String hexa = corBox.toString().substring(10, 16);
               munsellFuture = _repository.buscaMunsell(hexa);
             },
-            onPanUpdate: (details) {
+            /* onPanUpdate: (details) {
               iniciouTela = false;
               procurarCor(details.globalPosition);
               String hexa = corBox.toString().substring(10, 16);
               munsellFuture = _repository.buscaMunsell(hexa);
-            },
+            }, */
             child: Image.file(
               _fotoGramado,
               key: imageKey,
@@ -468,7 +444,7 @@ class _CameraState extends State<Camera> {
           Icon(Icons.clear, size: 20),
           Expanded(child: SizedBox()),
           Text(
-            "Descartar",
+            "Remover foto",
             style: TextStyle(fontSize: 18),
           ),
           Expanded(child: SizedBox()),
@@ -482,90 +458,6 @@ class _CameraState extends State<Camera> {
           munsellFuture = _repository.findAll();
           _stateController.add(corBox);
         });
-      },
-    );
-  }
-
-  Widget _rowAnalisar() {
-    Widget _txtDeConfirmacao() {
-      String txt = "Dados da análise foram salvas no dispositivos !";
-      if (!fotoDaGaleria)
-        txt = "A foto e sua análise foram salvas no dispositvo !";
-
-      return Text(
-        txt,
-        textAlign: TextAlign.center,
-      );
-    }
-
-    return RaisedButton(
-      color: Color.fromRGBO(138, 0, 16, 1.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      textColor: Colors.white,
-      child: Row(
-        children: [
-          Icon(Icons.send, size: 18),
-          Expanded(child: SizedBox()),
-          Text(
-            "Salvar",
-            style: TextStyle(fontSize: 18),
-          ),
-          Expanded(child: SizedBox()),
-        ],
-      ),
-      onPressed: () async {
-        if (_fotoGramado != null) {
-          if (!fotoDaGaleria) await GallerySaver.saveImage(_fotoGramado.path);
-          save();
-          return showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30)),
-                title: Column(
-                  children: [
-                    Icon(
-                      Icons.check_circle_outline,
-                      color: Colors.green,
-                      size: 70,
-                    ),
-                    SizedBox(height: 10),
-                    _txtDeConfirmacao(),
-                    SizedBox(height: 10),
-                  ],
-                ),
-              );
-            },
-          );
-        } else {
-          return showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30)),
-                title: Column(
-                  children: [
-                    Icon(
-                      Icons.warning,
-                      color: Colors.red,
-                      size: 70,
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "É necessário selecionar para salvar o histórico no dispositivo.",
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 10),
-                  ],
-                ),
-              );
-            },
-          );
-        }
       },
     );
   }

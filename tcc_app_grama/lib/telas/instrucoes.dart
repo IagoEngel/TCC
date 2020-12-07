@@ -67,8 +67,7 @@ class _InstrucoesState extends State<Instrucoes> {
         children: [
           Text(
             "Você terá 1 foto para análise por vez. Então, procure tirar ou selecionar fotos que tenham boa incidência de sol, onde há pouca sombra." +
-                "\n\nApós selecionar a foto, aperte e/ou deslize sobre a área da foto no app. E, solte para adquirir a cor representante daquele pixel da imagem." +
-                "\n\nSomente usuários administradores podem cadastrar os valores hexadecimais das cores, seu intervalo na tabela Munsell e as deficiências que representam.",
+                "\n\nApós selecionar a foto, você deverá escolher a cor que será analisada. Isso pode ser feito clicando sobre a área específica da imagem. E, solte para adquirir a cor representante daquela parte da imagem.",
             style: TextStyle(fontSize: 19),
           ),
         ],

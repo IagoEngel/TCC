@@ -47,7 +47,7 @@ class _MenuState extends State<Menu> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "AppGRAMADO",
+              "GramaTec",
               style: TextStyle(color: Colors.black, fontSize: 40),
             ),
             SizedBox(height: 15),

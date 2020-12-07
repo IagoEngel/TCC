@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tcc_app_grama/telas/add_cor.dart';
 import 'package:tcc_app_grama/telas/camera_screen.dart';
-import 'package:tcc_app_grama/telas/historico_screen.dart';
 import 'package:tcc_app_grama/telas/instrucoes.dart';
 import 'package:tcc_app_grama/telas/menu.dart';
 
@@ -42,8 +42,6 @@ Widget corpoDrawer(BuildContext context, String tituloAppBar) {
           _flatButton("Instruções", Instrucoes()),
           _divider(),
           _flatButton("Análise do gramado", Camera()),
-          _divider(),
-          _flatButton("Histórico de análise", HistoricoScreen()),
         ],
       ),
     );
