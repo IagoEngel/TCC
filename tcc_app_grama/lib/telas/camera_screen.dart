@@ -151,6 +151,7 @@ class _CameraState extends State<Camera> {
                   ],
                 ),
               ),
+              SizedBox(height: 20),
             ],
           ),
         ),
@@ -194,7 +195,17 @@ class _CameraState extends State<Camera> {
               },
             );
           } else
-            return null;
+            return showDialog(
+              context: context,
+              builder: (context){
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  title: Text("Cor não encontrada ! Selecione outra cor para analisar."),
+                );
+              },
+            );
         },
       ),
     );
@@ -227,6 +238,8 @@ class _CameraState extends State<Camera> {
             SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
               setState(() {
                 habilitarBotao = false;
+                widget.auxSintomas =
+                    snapshot.data.first.nutriente.toUpperCase();
               });
             });
             return Column(
@@ -267,13 +280,12 @@ class _CameraState extends State<Camera> {
                     : Text("Cor em hexadecimal: ${snapshot.data.first.hexa}"),
                 (iniciouTela)
                     ? Text("Deficiência de nutriente:")
-                    : Text("Deficiência de nutriente: ${snapshot.data.first.nutriente}"),
+                    : Text(
+                        "Deficiência de nutriente: ${snapshot.data.first.nutriente}"),
                 (iniciouTela)
                     ? Text("Munsell - Notação da cor:")
-                    : Text("Munsell - Notação da cor: ${snapshot.data.first.notacao}"),
-                (iniciouTela)
-                    ? Text("Nome da cor: branco")
-                    : Text("Nome da cor: ${snapshot.data.first.nomecor}"),
+                    : Text(
+                        "Munsell - Notação da cor: ${snapshot.data.first.notacao}"),
               ],
             );
           }

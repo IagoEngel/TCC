@@ -52,7 +52,7 @@ class _MenuState extends State<Menu> {
             ),
             SizedBox(height: 15),
             Text(
-              "Olá, bem-vindo(a) ao nosso App!\nAqui você encontrará uma maneira melhor de classificar a coloração de seu gramado. Para iniciar, acesse o menu e explore 'Informações' antes de inicar a análise do seu gramado.",
+              "Olá, bem-vindo(a) ao nosso App!\nAqui você encontrará uma maneira melhor de classificar a coloração de seu gramado. Para iniciar, acesse o menu e explore 'Informações' antes de iniciar a análise do seu gramado.",
               style: TextStyle(color: Colors.black, fontSize: 19),
               textAlign: TextAlign.center,
             ),
